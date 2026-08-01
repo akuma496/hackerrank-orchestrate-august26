@@ -70,14 +70,34 @@ def _text_for(bundle, transcript_text=None) -> str:
     return transcript_text if transcript_text else bundle.message_text
 
 
+# A domain mismatch alone doesn't distinguish a spoofed identity from a
+# legitimate business using a campaign/link-shortener domain (common WhatsApp
+# marketing practice). A long-established, verified, low-complaint business
+# gets the benefit of the doubt; a new or already-flagged one does not.
+_LEGIT_MIN_ACCOUNT_AGE_DAYS = 180
+_LEGIT_MIN_DOMAIN_AGE_DAYS = 90
+_LEGIT_MAX_REPORTS_30D = 15
+
+
+def _domain_mismatch_is_legit_pattern(trust: dict) -> bool:
+    return (
+        trust.get("business_verified") is True
+        and (trust.get("account_age_days") or 0) >= _LEGIT_MIN_ACCOUNT_AGE_DAYS
+        and (trust.get("domain_used_age_days") or 0) >= _LEGIT_MIN_DOMAIN_AGE_DAYS
+        and (trust.get("business_reports_30d") or 0) < _LEGIT_MAX_REPORTS_30D
+    )
+
+
 def hr1_domain_mismatch(bundle, ctx, **kw):
-    if bundle.business_id and bundle.trust.get("domain_mismatch"):
-        return Verdict(
-            "mute", "scam",
-            "Business sender's message domain does not match its official domain.",
-            "rule:HR1",
-        )
-    return None
+    if not (bundle.business_id and bundle.trust.get("domain_mismatch")):
+        return None
+    if _domain_mismatch_is_legit_pattern(bundle.trust):
+        return None
+    return Verdict(
+        "mute", "scam",
+        "Business sender's message domain does not match its official domain.",
+        "rule:HR1",
+    )
 
 
 def hr2_payment_risk(bundle, ctx, transcript_text=None, **kw):
@@ -159,7 +179,13 @@ def hr7_ignored_duplicate(bundle, ctx, transcript_text=None, **kw):
         if item.similarity >= 0.35 and item.event_summary.startswith(("user dismissed", "user muted")):
             dismissed_matches += 1
     if dismissed_matches >= 2:
-        mtype = "promotion" if PROMO_RE.search(text or "") else "spam"
+        # Marketplace-group listings are peer-to-peer sale posts even
+        # without classic promo keywords ("sale", "% off") -- the group
+        # context itself signals promotion over generic spam.
+        if PROMO_RE.search(text or "") or bundle.trust.get("group_type") == "marketplace":
+            mtype = "promotion"
+        else:
+            mtype = "spam"
         return Verdict(
             "mute", mtype,
             "Near-duplicate of multiple similar messages the user has previously dismissed.",
@@ -201,16 +227,26 @@ def apply_hard_rules(bundle, ctx, transcript_text=None) -> Verdict | None:
 
 # --- Guards (G1-G5): policy post-pass applied to every decision ---------
 
+# Rules exempt from G1: these detect unambiguous safety risk (spoofed
+# domain, OTP/payment scam, direct injection attack on the classifier), not
+# soft content heuristics. The problem statement is explicit that clear
+# scam/safety risk mutes regardless of the user's usual engagement -- G1's
+# "protect ambiguous personal content from over-muting" intent does not
+# apply to these.
+G1_EXEMPT_SOURCES = {"rule:HR1", "rule:HR2", "rule:HR8"}
+
+
 def apply_guards(action: str, message_type: str, bundle, source: str) -> tuple:
     """Returns (action, message_type, notes) after G1-G5. `notes` records any
     guard that changed the outcome, for the reason/audit trail."""
     notes = []
 
-    # G1: personal-sender guard -- no rule-mute on content alone.
+    # G1: personal-sender guard -- no rule-mute on ambiguous content alone.
     if (
         bundle.conversation_type == "personal"
         and action == "mute"
         and source.startswith("rule:")
+        and source not in G1_EXEMPT_SOURCES
         and (bundle.behavior.get("reported_count") or 0) == 0
     ):
         action = "digest"

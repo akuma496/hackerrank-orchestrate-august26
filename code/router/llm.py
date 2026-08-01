@@ -38,7 +38,12 @@ def _call_claude(payload_text: str, model: str) -> dict:
         system=_DECIDE_PROMPT,
         messages=[{"role": "user", "content": payload_text}],
     )
-    text = response.content[0].text.strip()
+    # Some models (e.g. claude-sonnet-5) may prepend a ThinkingBlock before
+    # the TextBlock -- find the actual text content rather than assuming index 0.
+    text_block = next((b for b in response.content if b.type == "text"), None)
+    if text_block is None:
+        raise RuntimeError(f"no text block in Claude response: {response.content}")
+    text = text_block.text.strip()
     if text.startswith("```"):
         text = text.strip("`")
         if text.startswith("json"):

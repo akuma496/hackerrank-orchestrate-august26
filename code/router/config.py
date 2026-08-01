@@ -64,8 +64,8 @@ TYPE_PRECEDENCE = (
     "event",
     "business_update",
     "promotion",
-    "forward",
     "greeting",
+    "forward",
     "personal",
     "unknown",
 )

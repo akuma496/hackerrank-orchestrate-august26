@@ -12,10 +12,29 @@ from . import config
 _URL_RE = re.compile(r"https?://\S+|www\.\S+|\b[a-z0-9.-]+\.(?:in|com|net|org|co)\b/\S*", re.I)
 _AMOUNT_RE = re.compile(r"(?:rs\.?|inr|₹)\s?\d[\d,]*(?:\.\d+)?", re.I)
 _OTP_FEE_RE = re.compile(
-    r"\botp\b|\breattempt fee\b|\bconvenience fee\b|\bpay.{0,15}(fee|charge)\b|\brelease.{0,10}package\b",
+    r"\botp\b|\breattempt fee\b|\bconvenience fee\b|\bpay.{0,15}(fee|charge)\b|"
+    r"\brelease.{0,10}package\b|\b\d{1,2}[\s-]?digit (code|otp|pin)\b|"
+    r"\b(login|verification|security|access)\s+code\b",
+    re.I,
+)
+# A mention of OTP/fee/code language inside an explicit denial ("we never
+# ask for your OTP") is a safety notice, not a request -- the opposite
+# signal. Without this, a business's own anti-scam warning gets misread as
+# the scam it's warning about.
+_OTP_NEGATION_RE = re.compile(
+    r"\b(never|don'?t|do not|won'?t|will not|should not|shouldn'?t)\s+"
+    r"(ask|request|require|need)\w*\b[^.]{0,50}\b(otp|payment|fee|code|pin|password)",
     re.I,
 )
 _MENTION_RE = re.compile(r"@(u_\d+)")
+
+
+def _has_otp_or_fee_ask(text: str) -> bool:
+    if not text:
+        return False
+    if _OTP_NEGATION_RE.search(text):
+        return False
+    return bool(_OTP_FEE_RE.search(text))
 
 
 def extract_entities(text: str) -> dict:
@@ -25,7 +44,7 @@ def extract_entities(text: str) -> dict:
     return {
         "urls": _URL_RE.findall(text),
         "amounts": _AMOUNT_RE.findall(text),
-        "otp_or_fee_ask": bool(_OTP_FEE_RE.search(text)),
+        "otp_or_fee_ask": _has_otp_or_fee_ask(text),
         "mentions": _MENTION_RE.findall(text),
     }
 
@@ -94,9 +113,13 @@ def _trust_features(msg: dict, ctx) -> dict:
         biz = ctx.business_accounts.get(msg["business_id"])
         if biz:
             trust["business_verified"] = biz["verified"] == "1"
+            # Requires a real official_domain to compare against -- an empty
+            # official_domain (missing data, not a spoofing signal) must not
+            # count as a mismatch.
             trust["domain_mismatch"] = (
-                biz["official_domain"] != biz["domain_used_by_sender"]
+                bool(biz["official_domain"])
                 and bool(biz["domain_used_by_sender"])
+                and biz["official_domain"] != biz["domain_used_by_sender"]
             )
             trust["account_age_days"] = int(biz["account_age_days"] or 0)
             trust["domain_used_age_days"] = int(biz["domain_used_by_sender_age_days"] or 0)
