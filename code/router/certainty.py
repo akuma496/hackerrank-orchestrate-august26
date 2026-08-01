@@ -77,15 +77,26 @@ def compute_family_votes(bundle, transcript_text=None) -> dict:
 
 def compute_certainty(votes: dict) -> tuple:
     """votes: family -> (direction, strength), may include 'llm'. Returns
-    (state, leaning_direction) where state in certain/confident/conflict/uninformed."""
-    tally: dict = {}
-    for direction, strength in votes.values():
-        if direction == "abstain":
-            continue
-        tally[direction] = tally.get(direction, 0) + _WEIGHT[strength]
+    (state, leaning_direction) where state in certain/confident/conflict/uninformed.
 
-    if not tally:
-        return "uninformed", None
+    The LLM's own vote never counts as corroboration for its own certainty --
+    if all four deterministic families (trust/relationship/behavior/content)
+    abstain, the state is 'uninformed' regardless of what the LLM says,
+    because there is no independent signal backing its opinion."""
+    deterministic_tally: dict = {}
+    for family, (direction, strength) in votes.items():
+        if family == "llm" or direction == "abstain":
+            continue
+        deterministic_tally[direction] = deterministic_tally.get(direction, 0) + _WEIGHT[strength]
+
+    if not deterministic_tally:
+        return "uninformed", votes.get("llm", (None, None))[0]
+
+    tally = dict(deterministic_tally)
+    if "llm" in votes:
+        direction, strength = votes["llm"]
+        if direction != "abstain":
+            tally[direction] = tally.get(direction, 0) + _WEIGHT[strength]
 
     ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
     top_dir, top_w = ranked[0]

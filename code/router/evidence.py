@@ -104,6 +104,12 @@ def rank_evidence(bundle, ctx, transcript_text: str | None = None) -> list:
     return items[: config.MAX_EVIDENCE]
 
 
+def candidate_id_set(bundle, ctx) -> set:
+    """Full candidate pool (not just the top MAX_EVIDENCE) -- used to validate
+    that an LLM only cites IDs that are actually plausible evidence."""
+    return {h["message_id"] for h, _ in _candidates(bundle, ctx)}
+
+
 def evidence_ids_field(items: list) -> str:
     if not items:
         return "none"
