@@ -1,0 +1,4 @@
+pandas
+google-genai
+anthropic
+python-dotenv

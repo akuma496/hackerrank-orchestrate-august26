@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Note: code/cache/*.json (transcripts, LLM decisions, judge flags) is
+# intentionally NOT ignored -- it's committed so graders can run offline
+# with zero API calls. See PLAN.md sec 1 (determinism via caching).
