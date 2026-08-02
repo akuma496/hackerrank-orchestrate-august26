@@ -44,7 +44,10 @@ def _format_features_block(bundle) -> str:
         f"behavior.muted_after_count: {b.get('muted_after_count')}",
         f"content.urls: {c['entities'].get('urls')}",
         f"content.amounts: {c['entities'].get('amounts')}",
-        f"content.otp_or_fee_ask: {c['entities'].get('otp_or_fee_ask')}",
+        f"content.otp_or_fee_ask (covers OTP/verification-code, reattempt/convenience fees, "
+        f"bank/card-detail requests, 'scan this QR and pay', 'verify via this link', "
+        f"account-lock threats -- any request for a sensitive code/detail or action under "
+        f"threat, not only the literal word OTP): {c['entities'].get('otp_or_fee_ask')}",
     ]
     return "\n".join(lines)
 
@@ -80,12 +83,31 @@ def build_payload(bundle, transcript_text, evidence_items) -> str:
     return "\n".join(parts)
 
 
-def _clamp(action: str, message_type: str) -> tuple:
+# Visibility for silent corrections -- if this ever grows beyond empty, an
+# upstream (LLM or rule) response returned something outside the allowed
+# vocabulary and got silently coerced. Surfaced in run_all_checks.py's
+# summary rather than only being invisible inside a clamped value.
+CLAMP_EVENTS = []
+
+
+def _clamp(message_id: str, action: str, message_type: str) -> tuple:
     if action not in config.ACTIONS:
+        CLAMP_EVENTS.append(f"{message_id}: invalid action '{action}' -> 'digest'")
         action = "digest"
     if message_type not in config.MESSAGE_TYPES:
+        CLAMP_EVENTS.append(f"{message_id}: invalid message_type '{message_type}' -> 'unknown'")
         message_type = "unknown"
     return action, message_type
+
+
+def _enforce_invariants(action: str, message_type: str) -> str:
+    """Structural enforcement, not just validation: scam/spam MUST mute.
+    Runs unconditionally on every decision (rule-fired or LLM-fired) so this
+    bad state cannot exist in a returned DecisionRow, rather than only being
+    caught after the fact by validate.py."""
+    if message_type in ("scam", "spam"):
+        return "mute"
+    return action
 
 
 def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
@@ -101,9 +123,11 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
 
     if verdict:
         action, message_type, notes = rules.apply_guards(
-            verdict.action, verdict.message_type, bundle, verdict.source
+            verdict.action, verdict.message_type, bundle, verdict.source,
+            safety_critical=verdict.safety_critical,
         )
-        action, message_type = _clamp(action, message_type)
+        action, message_type = _clamp(msg["message_id"], action, message_type)
+        action = _enforce_invariants(action, message_type)
         reason = verdict.reason if not notes else f"{verdict.reason} {' '.join(notes)}"
         confidence = certainty.pick_confidence("certain", hard_rule=True)
         return DecisionRow(
@@ -127,7 +151,8 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
     action, message_type, notes = rules.apply_guards(
         llm_result.get("action", "digest"), llm_result.get("message_type", "unknown"), bundle, "llm"
     )
-    action, message_type = _clamp(action, message_type)
+    action, message_type = _clamp(msg["message_id"], action, message_type)
+    action = _enforce_invariants(action, message_type)
     reason = (llm_result.get("reason") or "").strip()
     if notes:
         reason = f"{reason} {' '.join(notes)}".strip()

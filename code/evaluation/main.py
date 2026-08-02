@@ -71,11 +71,27 @@ def evaluate(gold_rows, ctx, transcripts, label: str) -> dict:
 
     conf_abs_err = sum(abs(float(g["confidence"]) - p.confidence) for g, p in predictions) / n
 
-    # Headline: never miss an important message -- gold says notify, we said digest/mute.
+    # Threshold 1 (hard line): never miss an important message -- gold says
+    # notify, we said digest/mute.
     critical_misses = [
         (g["message_id"], g["action"], p.action)
         for g, p in predictions
         if g["action"] == "notify" and p.action != "notify"
+    ]
+
+    # Threshold 2 (sanity check, not a hard gate): no spam/scam pushed
+    # forward -- gold says mute (esp. spam/scam type), we said notify. This
+    # is the opposite failure mode from critical_misses: over-eager
+    # notification of exactly the content the system exists to suppress.
+    spam_pushed_forward = [
+        (g["message_id"], g["message_type"], p.action)
+        for g, p in predictions
+        if g["action"] == "mute" and p.action == "notify"
+    ]
+    spam_scam_pushed_forward = [
+        (mid, mtype, pred_a)
+        for mid, mtype, pred_a in spam_pushed_forward
+        if mtype in ("spam", "scam")
     ]
 
     confusion = Counter((g["action"], p.action) for g, p in predictions)
@@ -90,6 +106,9 @@ def evaluate(gold_rows, ctx, transcripts, label: str) -> dict:
         "confidence_mae": round(conf_abs_err, 3),
         "critical_misses": critical_misses,
         "critical_miss_count": len(critical_misses),
+        "spam_pushed_forward": spam_pushed_forward,
+        "spam_pushed_forward_count": len(spam_pushed_forward),
+        "spam_scam_pushed_forward_count": len(spam_scam_pushed_forward),
         "confusion": dict(confusion),
     }
     return report
@@ -102,10 +121,15 @@ def print_report(report):
     print(f"evidence_any_overlap:   {report['evidence_any_overlap_rate']}")
     print(f"evidence_avg_jaccard:   {report['evidence_avg_jaccard']}")
     print(f"confidence_mae:         {report['confidence_mae']}")
-    print(f"critical_miss_count:    {report['critical_miss_count']} (gold=notify, predicted!=notify)")
+    print(f"critical_miss_count:    {report['critical_miss_count']} (gold=notify, predicted!=notify) [HARD THRESHOLD]")
     if report["critical_misses"]:
         for mid, gold_a, pred_a in report["critical_misses"]:
             print(f"  MISS {mid}: gold=notify predicted={pred_a}")
+    print(f"spam_pushed_forward:    {report['spam_pushed_forward_count']} (gold=mute, predicted=notify) [sanity check]")
+    print(f"  of which spam/scam:   {report['spam_scam_pushed_forward_count']}")
+    if report["spam_pushed_forward"]:
+        for mid, gold_type, pred_a in report["spam_pushed_forward"]:
+            print(f"  PUSHED {mid}: gold=mute/{gold_type} predicted={pred_a}")
     print(f"confusion (gold,pred):  {report['confusion']}")
 
 

@@ -65,6 +65,13 @@ class Verdict:
     reason: str
     source: str  # e.g. "rule:HR1"
     is_hard_rule: bool = True
+    # Detects unambiguous safety risk (spoofed domain, OTP/payment-code
+    # scam, injection attack) rather than a soft content heuristic. Carried
+    # on the verdict itself so G1 doesn't depend on a separately-maintained
+    # source-string allowlist staying in sync with the rule set -- a rule
+    # that forgets to set this is exempt from nothing, which fails safe
+    # (falls back to G1's protection) rather than failing open.
+    safety_critical: bool = False
 
 
 def infer_type_from_content(text: str, otp_or_fee_ask: bool, is_business: bool) -> str:
@@ -87,6 +94,28 @@ def _text_for(bundle, transcript_text=None) -> str:
     return transcript_text if transcript_text else bundle.message_text
 
 
+def _describe_otp_fee_signal(text: str) -> str:
+    """otp_or_fee_ask covers several distinct scam mechanics -- name the one
+    that actually matched instead of a generic 'OTP/payment code' phrase
+    that's wrong for e.g. a QR-payment or verify-via-link pattern."""
+    text = text or ""
+    if re.search(r"\botp\b|\b\d{1,2}[\s-]?digit (code|otp|pin)\b|\b(login|verification|security|access)\s+code\b", text, re.I):
+        return "an OTP/verification code"
+    if re.search(r"\breattempt fee\b|\bconvenience fee\b|\bpay.{0,15}(fee|charge)\b", text, re.I):
+        return "a fee payment"
+    if re.search(r"\bbank (details?|account details?)\b|\bcard details?\b", text, re.I):
+        return "bank/card details"
+    if re.search(r"\bscan (this|the) qr\b|\bqr code\b", text, re.I):
+        return "a QR-code payment"
+    if re.search(r"\bverify (through|via) this link\b", text, re.I):
+        return "verification via a link"
+    if re.search(r"\baccount (will be |may be )?(blocked|locked|restricted|suspended)\b|\bfailed login attempts?\b", text, re.I):
+        return "action under an account-lock threat"
+    if re.search(r"\brelease.{0,10}package\b", text, re.I):
+        return "a package-release payment"
+    return "a sensitive code or detail"
+
+
 # A domain mismatch alone doesn't distinguish a spoofed identity from a
 # legitimate business using a campaign/link-shortener domain (common WhatsApp
 # marketing practice). A long-established, verified, low-complaint business
@@ -105,38 +134,40 @@ def _domain_mismatch_is_legit_pattern(trust: dict) -> bool:
     )
 
 
-def hr1_domain_mismatch(bundle, ctx, **kw):
+def hr1_domain_mismatch(bundle, ctx, transcript_text=None, **kw):
     if not (bundle.business_id and bundle.trust.get("domain_mismatch")):
         return None
     if _domain_mismatch_is_legit_pattern(bundle.trust):
         return None
-    return Verdict(
-        "mute", "scam",
-        "Business sender's message domain does not match its official domain.",
-        "rule:HR1",
-    )
+    reason = "Business sender's message domain does not match its official domain."
+    if bundle.content["entities"]["otp_or_fee_ask"]:
+        text = _text_for(bundle, transcript_text)
+        reason += f" The message also asks for {_describe_otp_fee_signal(text)}, reinforcing the scam signal."
+    return Verdict("mute", "scam", reason, "rule:HR1", safety_critical=True)
 
 
 def hr2_payment_risk(bundle, ctx, transcript_text=None, **kw):
     if not bundle.content["entities"]["otp_or_fee_ask"]:
         return None
+    text = _text_for(bundle, transcript_text)
+    signal = _describe_otp_fee_signal(text)
     if bundle.business_id:
         unverified = bundle.trust.get("business_verified") is False
         young_domain = (bundle.trust.get("domain_used_age_days") or 9999) < 30
         no_relationship = (bundle.relationship.get("activity_count_180d") or 0) == 0
         if not (unverified or young_domain or no_relationship):
             return None
-        reason = "Message asks for payment/OTP from a business sender with no verified relationship to the user."
+        reason = f"Message asks for {signal} from a business sender with no verified relationship to the user."
     else:
-        # Not a business relationship to check -- OTP/payment-code requests
-        # are muted on content alone regardless of group/personal context,
-        # since account compromise (a hacked family/group member's account
-        # asking for OTPs) is a common vector this can't distinguish from.
+        # Not a business relationship to check -- these requests are muted
+        # on content alone regardless of group/personal context, since
+        # account compromise (a hacked family/group member's account asking
+        # for this) is a common vector this can't distinguish from.
         reason = (
-            "Message asks for an OTP/payment code -- muted as a precaution regardless of "
+            f"Message asks for {signal} -- muted as a precaution regardless of "
             "sender relationship, since this exact request pattern is a common account-compromise vector."
         )
-    return Verdict("mute", "scam", reason, "rule:HR2")
+    return Verdict("mute", "scam", reason, "rule:HR2", safety_critical=True)
 
 
 def hr3_promo_opted_out(bundle, ctx, transcript_text=None, **kw):
@@ -223,11 +254,11 @@ def hr7_ignored_duplicate(bundle, ctx, transcript_text=None, **kw):
 def hr8_router_injection(bundle, ctx, transcript_text=None, **kw):
     text = _text_for(bundle, transcript_text)
     if INJECTION_RE.search(text or ""):
-        return Verdict(
-            "mute", "scam",
-            "Message content attempts to instruct the classifier directly (prompt-injection pattern) -- treated as a scam/manipulation signal.",
-            "rule:HR8",
-        )
+        reason = "Message content attempts to instruct the classifier directly (prompt-injection pattern)."
+        if bundle.content["entities"]["otp_or_fee_ask"]:
+            signal = _describe_otp_fee_signal(text)
+            reason += f" It also asks for {signal}, the underlying scam the injection was trying to disguise."
+        return Verdict("mute", "scam", reason, "rule:HR8", safety_critical=True)
     return None
 
 
@@ -253,26 +284,29 @@ def apply_hard_rules(bundle, ctx, transcript_text=None) -> Verdict | None:
 
 # --- Guards (G1-G5): policy post-pass applied to every decision ---------
 
-# Rules exempt from G1: these detect unambiguous safety risk (spoofed
-# domain, OTP/payment scam, direct injection attack on the classifier), not
-# soft content heuristics. The problem statement is explicit that clear
-# scam/safety risk mutes regardless of the user's usual engagement -- G1's
-# "protect ambiguous personal content from over-muting" intent does not
-# apply to these.
-G1_EXEMPT_SOURCES = {"rule:HR1", "rule:HR2", "rule:HR8"}
 
-
-def apply_guards(action: str, message_type: str, bundle, source: str) -> tuple:
+def apply_guards(action: str, message_type: str, bundle, source: str, safety_critical: bool = False) -> tuple:
     """Returns (action, message_type, notes) after G1-G5. `notes` records any
-    guard that changed the outcome, for the reason/audit trail."""
+    guard that changed the outcome, for the reason/audit trail.
+
+    `safety_critical` comes from the firing Verdict (see Verdict.safety_critical)
+    for rule-sourced calls, and is False for LLM-sourced calls -- a rule that
+    doesn't explicitly mark itself safety_critical is NOT exempt from G1,
+    which fails safe rather than requiring a separately-maintained allowlist
+    to stay in sync with the rule set."""
     notes = []
 
     # G1: personal-sender guard -- no rule-mute on ambiguous content alone.
+    # Rules detecting unambiguous safety risk (safety_critical=True: spoofed
+    # domain, OTP/payment scam, injection attack) are exempt -- the problem
+    # statement is explicit that clear scam/safety risk mutes regardless of
+    # the user's usual engagement. G1's "protect ambiguous personal content
+    # from over-muting" intent does not apply to those.
     if (
         bundle.conversation_type == "personal"
         and action == "mute"
         and source.startswith("rule:")
-        and source not in G1_EXEMPT_SOURCES
+        and not safety_critical
         and (bundle.behavior.get("reported_count") or 0) == 0
     ):
         action = "digest"

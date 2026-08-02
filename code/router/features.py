@@ -14,7 +14,12 @@ _AMOUNT_RE = re.compile(r"(?:rs\.?|inr|₹)\s?\d[\d,]*(?:\.\d+)?", re.I)
 _OTP_FEE_RE = re.compile(
     r"\botp\b|\breattempt fee\b|\bconvenience fee\b|\bpay.{0,15}(fee|charge)\b|"
     r"\brelease.{0,10}package\b|\b\d{1,2}[\s-]?digit (code|otp|pin)\b|"
-    r"\b(login|verification|security|access)\s+code\b",
+    r"\b(login|verification|security|access)\s+code\b|"
+    r"\bbank (details?|account details?)\b|\bcard details?\b|"
+    r"\bscan (this|the) qr\b|\bqr code\b[^.]{0,25}\b(pay|payment)\b|"
+    r"\bverify (through|via) this link\b|"
+    r"\baccount (will be |may be )?(blocked|locked|restricted|suspended)\b|"
+    r"\bfailed login attempts?\b",
     re.I,
 )
 # A mention of OTP/fee/code language inside an explicit denial ("we never

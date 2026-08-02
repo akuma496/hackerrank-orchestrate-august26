@@ -27,6 +27,17 @@ in this system.
   behavior.muted_after_count / behavior.sample_size, not against how many
   evidence IDs happen to be listed -- the evidence list is capped at 5 even
   when the true count is higher.
+- message_type does NOT constrain action except for one fixed invariant:
+  message_type in (scam, spam) requires action=mute. There is no reverse
+  constraint -- a greeting, forward, or personal message CAN legitimately be
+  muted (e.g. a repeatedly-ignored forwarded greeting) or a business_update
+  CAN be muted. Do not flag a mute action just because the type isn't
+  scam/spam; only flag if the REASON's own stated logic contradicts mute.
+- Feature field names are sometimes broader than their literal name suggests
+  (e.g. otp_or_fee_ask covers bank-detail requests, QR-payment asks, and
+  verify-via-link patterns, not only literal "OTP" text) -- each field in
+  FEATURES is accompanied by a parenthetical describing its actual scope
+  when that matters; trust that scope over the field name alone.
 
 ## What actually counts as incoherent
 

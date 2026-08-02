@@ -29,6 +29,12 @@ def main():
     rows = decide.decide_all(ctx)
     output.write_output(rows)
     print(f"wrote {len(rows)} rows")
+    if decide.CLAMP_EVENTS:
+        print(f"CLAMP EVENTS (LLM/rule returned an out-of-vocabulary value): {len(decide.CLAMP_EVENTS)}")
+        for e in decide.CLAMP_EVENTS:
+            print(" -", e)
+    else:
+        print("clamp events: 0")
 
     print("\n=== 2/5: Tier-1 validator ===")
     violations = validate.validate_output(ctx)
@@ -67,7 +73,8 @@ def main():
     print(f"test  action_accuracy:    {test_report['action_accuracy']}")
     print(f"train type_accuracy:      {train_report['message_type_accuracy']}")
     print(f"test  type_accuracy:      {test_report['message_type_accuracy']}")
-    print(f"critical misses (t/te):   {train_report['critical_miss_count']}/{test_report['critical_miss_count']}")
+    print(f"critical misses (t/te):   {train_report['critical_miss_count']}/{test_report['critical_miss_count']} [HARD THRESHOLD: 0]")
+    print(f"spam pushed fwd (t/te):   {train_report['spam_pushed_forward_count']}/{test_report['spam_pushed_forward_count']} [sanity check]")
     print(f"judge flags:              {len(flags)}")
     print(f"determinism:              {'OK' if identical else 'BROKEN'}")
 
