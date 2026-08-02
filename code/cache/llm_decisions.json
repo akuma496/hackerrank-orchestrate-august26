@@ -10,6 +10,15 @@
     "message_type": "event",
     "reason": "School admin sent a time-sensitive field trip notification with same-day deadline for bus list closure, requiring immediate parental action."
   },
+  "02bddf45735f7943d1718fade83821b6a76f30e67e1d313603657c0c3defd4a5": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0186"
+    ],
+    "message_type": "promotion",
+    "reason": "A verified business sent a promotional offer with discount/cashback details and an unsubscribe option; the user has consistently opened similar messages without acting on them, and has opted to receive promotions."
+  },
   "03073ca21f7c2d0f3254a16993cbc4523e488e829caf89c7fd0675edd99a16f5": {
     "action": "digest",
     "conflict_note": "DND window demotes notify to digest since no urgency present",
@@ -49,6 +58,18 @@
     ],
     "message_type": "forward",
     "reason": "A highly forwarded chain health tip in an extended family group with no urgency, previously muted after a similar message."
+  },
+  "04620ba687ca89c7531d8cc2bdd82e844ef17fcd5e1a51f1ac84aad16bd28ce5": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0130",
+      "message_0142",
+      "message_0150",
+      "message_0180"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted group admin sent a time-sensitive directive requiring immediate action within 10 minutes to avoid a vehicle being moved or security enforcement."
   },
   "04995383cab2c4b65fb5f93e007d6893010913190ff320ae0839e12bf43bcfef": {
     "action": "digest",
@@ -187,6 +208,19 @@
     "message_type": "personal",
     "reason": "A family member sent a warm check-in explicitly saying nothing urgent, so it can wait to be seen later."
   },
+  "0b18667a251fc129daeeffbb3cb8af0b183513e2ddd92980d35d1323c515b47d": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0080",
+      "message_0042",
+      "message_0177",
+      "message_0193",
+      "message_0079"
+    ],
+    "message_type": "forward",
+    "reason": "Heavily forwarded chain-message with a sharing directive; user has muted 8 prior similar messages from this sender and dismissed all interactions, establishing a clear pattern of unwanted content."
+  },
   "0b9e6c2da0dbe14f8d7e929970aef3c8423d14b47f2ebaaebab97c33709c67f5": {
     "action": "digest",
     "conflict_note": "G2 applies: in_dnd_window is true, so notify is demoted to digest; message_type is personal (not urgent), so demotion is warranted.",
@@ -262,6 +296,16 @@
     "message_type": "promotion",
     "reason": "A verified travel business sent a routine marketing offer with pricing and an unsubscribe option, which is low priority."
   },
+  "10e19ac13330ded8c0a53cc283ff86209b69e535d066587c18e273da96e128be": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0249",
+      "message_0118"
+    ],
+    "message_type": "business_update",
+    "reason": "A trusted personal contact sent a non-urgent work note about preparing for tomorrow's standup, with explicit reassurance that nothing is blocking tonight."
+  },
   "11e37193de4a2b87a8a03f00e84dd1b6fe67fe13c63169d80661601b309bf2e6": {
     "action": "notify",
     "conflict_note": "",
@@ -270,6 +314,13 @@
     ],
     "message_type": "urgent",
     "reason": "A coworker admin is sending a time-sensitive work coordination message about an imminent meeting with specific action requirements and a consequence if not addressed."
+  },
+  "11f84392f3913a782e7c158086abde4fe3011b9bb08d7c86d973012ce171ddd3": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "urgent",
+    "reason": "A family member reports a health emergency requiring immediate awareness and potential action from the recipient."
   },
   "129c35e724b88c61ba61079b1983c7100849ab1e2a7db7fd57c22d8e9da99d49": {
     "action": "mute",
@@ -321,6 +372,16 @@
     ],
     "message_type": "promotion",
     "reason": "Promotion post in a college faculty group from a member with a pattern of similar messages the recipient has consistently muted and dismissed; behavioral signals (0% open/reply rate, 100% dismiss rate, 2 muted-after instances) show the recipient does not engage with this sender's promotional content."
+  },
+  "161929c2fcac48afdb4c8bbdca296a14fdca378cb34105fb20aa9ccf5238c88d": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0004",
+      "message_0239"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender (Amazon) sent a time-sensitive order status update with actionable delivery information; the recipient has a strong history of engaging with similar messages from this sender."
   },
   "16a3849761b02be270aaf9a4bafa8d930efd1d93c803a7698281d165fa0771b1": {
     "action": "notify",
@@ -374,6 +435,16 @@
     "message_type": "forward",
     "reason": "Heavily forwarded (11x) chain message requesting viral sharing in a family group; user has muted 8 similar messages from this sender with 100% dismissal rate and zero engagement."
   },
+  "1793a345e6f2a1d78ac286ffc9c7d31485e90ff2e2e11d5d9532c4bbbbdf3ad7": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0031",
+      "message_0400"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender with perfect engagement history is notifying the recipient of a package status update with actionable next steps (check delivery details in app)."
+  },
   "1885f6e0ce6e24d94dc3f1d5a60decab0582a72064f5c0b21addeadfdc323944": {
     "action": "digest",
     "conflict_note": "",
@@ -413,6 +484,20 @@
     ],
     "message_type": "forward",
     "reason": "Heavily forwarded chain-letter-style message that the recipient has consistently dismissed and muted after receiving from this sender across 8 prior similar messages."
+  },
+  "1cfb69477b740b0ae354238126a28ce70158cf2f002442ce94f060a3510a955e": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "business_update",
+    "reason": "A verified business sender notifies the recipient that a monthly statement is ready for review in the official app, with no time-critical action required."
+  },
+  "1d432f6287a0e40fa775ca25e4642fae3682266fa8b369a8cf9b5881c45b9c27": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "business_update",
+    "reason": "A group member shared market commentary and research on semiconductor stocks with explicit disclaimer against intraday trading pressure; low priority informational content suitable for later review."
   },
   "1d9625e647ba1c7357c0d09e94837fc57fb02b256dbbb726d34f391521b3b033": {
     "action": "digest",
@@ -459,6 +544,16 @@
     ],
     "message_type": "event",
     "reason": "A verified business sender with perfect engagement history sent a shipping update on an order the recipient is actively tracking, warranting immediate visibility."
+  },
+  "1fdb1424626b0bba03688009554e63b4610adac3f5afafe02eb087f98189f62b": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0005",
+      "message_0245"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender with strong engagement history (100% open and reply rates) is notifying the recipient of a time-sensitive health-related update requiring action before a scheduled time."
   },
   "1fe449b87c98b6e61249017e964a4a6680f4ffbd2cb65d4569dc422a6f3607bd": {
     "action": "mute",
@@ -545,6 +640,15 @@
     "evidence_ids": [],
     "message_type": "event",
     "reason": "A verified business sent a delivery appointment reminder for today; while time-sensitive, it requires no immediate action beyond being aware and prepared, and the DND window applies."
+  },
+  "2a7bde6ad928fa03d9d9b77482f1780c0c7d16c5d81ebc59fc4d192860bbdb03": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0065"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted personal contact is holding an item with a same-day, time-sensitive pickup deadline (6 PM) and explicit request for immediate confirmation, requiring the recipient to act within a narrow window."
   },
   "2b3c9eeb002aa22b3db4470bdb2d6914a50fdc86d19d5c00168da891c4f58cbc": {
     "action": "mute",
@@ -729,6 +833,24 @@
     "message_type": "personal",
     "reason": "User has consistently muted messages from this sender across 7 prior interactions (100% mute-after rate), establishing a clear pattern of unwanted contact despite no safety concerns."
   },
+  "3525b19c4f893c3e56d9c7ca6796832bbca1b22c63ace93ec98ebc58ddf1f4db": {
+    "action": "digest",
+    "conflict_note": "domain_mismatch flag present but no urls or credential requests in content",
+    "evidence_ids": [
+      "message_0007",
+      "message_0033",
+      "message_0272"
+    ],
+    "message_type": "promotion",
+    "reason": "A verified business sent an opted-in travel promotion with pricing details, which is low priority and can wait."
+  },
+  "3555642c7fc4ee4171e1ec840f608d352ae0894bad8b1295148035c334341fae": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "event",
+    "reason": "A society admin sent a potluck registration update with a soft deadline (next Sunday) and no immediate action required from the recipient."
+  },
   "35e1e52f1c46d2640a2b4b969effa2467e666a74f5909f57dfe8b4e2938ed2c4": {
     "action": "digest",
     "conflict_note": "",
@@ -764,6 +886,13 @@
     "message_type": "urgent",
     "reason": "A family member reports a health emergency requiring immediate attention, warranting instant notification despite low prior interaction history."
   },
+  "37601617a4d17d977cb8839ced62f888cac5c0d5b92e93b21fd041b689663084": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "personal",
+    "reason": "A peer in a college student group is asking classmates for course materials with no urgency claimed; this is routine academic coordination suitable for later review."
+  },
   "3773ff1a062b597b819bce568eb6e09fdbf8aba01cac2fad8ad2653f93f4379e": {
     "action": "mute",
     "conflict_note": "G1 does not apply: conversation is group, not personal; behavioral signals (muted_after_count=11, dismissed_rate=1.0, opened_rate=0.0) clearly establish the user's prior rejection pattern with this sender.",
@@ -773,6 +902,26 @@
     ],
     "message_type": "greeting",
     "reason": "Highly forwarded message (11 times) in a family group where the recipient has muted this sender after 11 similar messages with 100% dismissal rate and zero engagement."
+  },
+  "37de6bcd79961121ae40134b4f425277c8bd25ea8076beaa66378ef56900c093": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0402"
+    ],
+    "message_type": "promotion",
+    "reason": "User has previously muted after receiving a similar promotional message from this sender, establishing a clear pattern of non-engagement with their offers."
+  },
+  "39acf838c9e417905f5f91e750a57329c962d0c9e017ee6dc03d3eaacefd845b": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0166",
+      "message_0165",
+      "message_0387"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted family member is requesting an immediate decision with a hard 10-minute deadline while outside, requiring a time-sensitive response."
   },
   "39c45c8f82e04106fc3ee2a438bbf41ea4687e38c7f791f996895f65c9c1e636": {
     "action": "digest",
@@ -863,6 +1012,17 @@
     "message_type": "forward",
     "reason": "Forwarded greeting from a sender whose similar messages have been consistently dismissed and muted by this user 11 times; recipient has the group muted and has never engaged with this sender."
   },
+  "3eb520e9c5e9eb6fda9b0d209ea02304da25be3db1ff82c0e4dee6a7c0dbdf5f": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0228",
+      "message_0362",
+      "message_0055"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted personal contact is requesting immediate action to prevent an escalation within a narrow time window (20 minutes), and the recipient has consistently replied quickly to similar messages from this sender."
+  },
   "408ba3f62e5f1ed0951abcc8cfa75ade61bedaf3391cce443985e1ef086fa652": {
     "action": "notify",
     "conflict_note": "",
@@ -885,6 +1045,13 @@
     ],
     "message_type": "event",
     "reason": "Verified business sender with strong engagement history (100% open and reply rate) notifying recipient of a same-day return pickup window that requires preparation and action within a narrow time slot (2-5 PM)."
+  },
+  "412b379915fd76b232838b853ad202b6d5e1abc561b5eb65f3037e04ad60bbb1": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "urgent",
+    "reason": "A personal acquaintance has notified the recipient of a lost item with a hard deadline (7 PM today) requiring action within hours or the item will be discarded."
   },
   "417da0a2a582d8ea4b7870af1badbb474969f7f2add6765631ca0df7670fc501": {
     "action": "digest",
@@ -1011,6 +1178,28 @@
     ],
     "message_type": "urgent",
     "reason": "School admin sent a time-sensitive field trip notice with same-evening deadline for bus list closure and required actions (consent, ID card, lunch prep) that demand immediate recipient attention."
+  },
+  "47a62419b8b806ee12389890fe604be38e79a25add3ae3958627d271630b92a1": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0219"
+    ],
+    "message_type": "business_update",
+    "reason": "A coworker admin requested feedback on a document with an explicit disclaimer that nothing is urgent, making this low-priority despite the business context."
+  },
+  "47b2a89eeb2d421b92c292cfd267aea52ec0903fa1f115dd58dc1adcbcefcb24": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0079",
+      "message_0178",
+      "message_0194",
+      "message_0247",
+      "message_0177"
+    ],
+    "message_type": "spam",
+    "reason": "Heavily forwarded (9 times) clickbait-style health claim with pressure language ('don't ignore if elders are at home') in a dance class group; user has muted 8 similar messages from this sender with 0% engagement and 100% dismissal rate."
   },
   "47c139cd8c45016f6565a5f31065bb455b35c276a4b6bd97b25d6a05e4b261f4": {
     "action": "digest",
@@ -1161,6 +1350,16 @@
     "message_type": "greeting",
     "reason": "A family member sent a low-priority morning greeting with an explicit disclaimer of urgency, asking for a non-time-critical callback when free."
   },
+  "521498c52133cf99fe13a488b1d8a0b205a80b81940815af0f90cb6bc20bb84e": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0167",
+      "message_0359"
+    ],
+    "message_type": "personal",
+    "reason": "A trusted personal contact sent a routine update explicitly saying nothing is urgent, so it can wait until later."
+  },
   "52aaf6a8b44785f4941c59aa7d066db07bb50c9c4045ccbabb3d915d32dd523f": {
     "action": "mute",
     "conflict_note": "",
@@ -1173,6 +1372,16 @@
     "message_type": "spam",
     "reason": "Heavily forwarded chain-message-style post with a classic 'share before deadline' pattern; recipient has muted 8 of 8 prior messages from this sender and consistently dismissed similar content."
   },
+  "5386cdfb0254f93df06d546e82e758a30a4b3fcbe0ce34619b59a185d50d2f7f": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0004",
+      "message_0239"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender with strong engagement history (100% open and reply rates) sent a delivery status update for an order the recipient is tracking; the message contains actionable tracking information and the recipient consistently engages with similar messages from this sender."
+  },
   "54863a8851c87494311850b299300710551e3aef9634d7a4cd0a43fcdf92a8d1": {
     "action": "notify",
     "conflict_note": "",
@@ -1182,6 +1391,18 @@
     ],
     "message_type": "event",
     "reason": "A verified business sender with a perfect engagement history (100% open and reply rate) is notifying the user about a health-related appointment or prescription requiring review before a scheduled time."
+  },
+  "54f69b6ba687ec2a1a5209fb73694cdb2e035936478e86809b756449b928c81f": {
+    "action": "mute",
+    "conflict_note": "Family group normally warrants caution about muting, but established behavior pattern overrides.",
+    "evidence_ids": [
+      "message_0080",
+      "message_0177",
+      "message_0193",
+      "message_0042"
+    ],
+    "message_type": "forward",
+    "reason": "Heavily forwarded (11 times) greeting-style message with a request to share further; recipient has muted this sender's messages 8 times in the past with a 100% dismissal rate, indicating established non-interest despite family group context."
   },
   "553d34b73f4ae636a2ba6658134947a7c524216c176acb481b2bf4ea9b3c5d6c": {
     "action": "notify",
@@ -1212,6 +1433,13 @@
     "message_type": "event",
     "reason": "A business sender with strong engagement history (100% open and reply rates over 5 recent messages) sent a time-sensitive health/appointment update requiring action before a scheduled time."
   },
+  "56c8ed3e6e060ebd0b2d6565e67e5b9a26dc5b7ee4a8260cdd9f61dacbe7354d": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "event",
+    "reason": "A group admin sent a low-urgency administrative reminder about a cultural event form with a one-week deadline; no immediate action is required today."
+  },
   "57148e98f4c6e96dc28a2c5c1ce1e792afe63425200a51412b4e45c36fe72e55": {
     "action": "notify",
     "conflict_note": "",
@@ -1220,6 +1448,16 @@
     ],
     "message_type": "event",
     "reason": "A health services provider sent a time-sensitive appointment or prescription update requiring review before a scheduled time, with strong historical engagement signals (100% open and reply rates on similar messages)."
+  },
+  "589ce8b56b2a93b981cce5098c36fd1b4ab8e116446def153ea6a28586cfbef0": {
+    "action": "mute",
+    "conflict_note": "G1 nominally protects personal senders from content-tone muting, but behavioral signal (muted_after_count: 2) establishes prior pattern with this exact sender; forwarding amplifies risk.",
+    "evidence_ids": [
+      "message_0233",
+      "message_0373"
+    ],
+    "message_type": "spam",
+    "reason": "A heavily forwarded (7x) health claim with no medical authority, urging discontinuation of medication and replacement with an unverified herbal remedy, matches the user's prior muting pattern with this sender and represents potentially unsafe misinformation."
   },
   "58c52a7f95edbb78bb929c9d779266d6c5eaa56fc8c4cc5cc3766ba697e48b7a": {
     "action": "digest",
@@ -1234,6 +1472,26 @@
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "A family member sent a casual, low-urgency message about a future meetup with uncertain timing; no immediate action required."
+  },
+  "59df64c09e6fee710bd24b8f31977a43b0eec9df9e99341fa4d29d1b1c38a9a4": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0167",
+      "message_0359"
+    ],
+    "message_type": "personal",
+    "reason": "A trusted personal contact sent a routine status update with no time-critical need, explicitly disclaiming urgency and proposing deferred communication."
+  },
+  "5a13a1c9b8db3df059aae3307f158e958ed8f74615cb8cc085972568d28b4784": {
+    "action": "mute",
+    "conflict_note": "business_verified true but domain_mismatch true",
+    "evidence_ids": [
+      "message_0137",
+      "message_0138"
+    ],
+    "message_type": "scam",
+    "reason": "A business message claims a prior relationship but has a mismatched sending domain and points to a link that isn't actually shown, a classic phishing pattern."
   },
   "5b7cc7f3ddfd51d88e30e58d6d98b2000305424dab63f24b98044ac9e0059b17": {
     "action": "mute",
@@ -1385,6 +1643,22 @@
     "message_type": "business_update",
     "reason": "A heavily forwarded (6x) market commentary post in an investment tips group; user has consistently opened similar messages without acting, indicating low-priority informational content."
   },
+  "6b4e121c8b6f5ed710de3e3f0c316daaccf03678b39cb2d44fc6b22b19e7e70b": {
+    "action": "notify",
+    "conflict_note": "promotion vs event: classified as promotion because this is a sales post in a marketplace group offering an item for pickup; the same-day deadline creates urgency (notify rather than digest) even though it is not a safety or system issue.",
+    "evidence_ids": [
+      "message_0065"
+    ],
+    "message_type": "promotion",
+    "reason": "A marketplace member is holding a specific item for the recipient with a same-day deadline (6 PM), requiring a response decision within hours to avoid losing the item."
+  },
+  "6bfca0f412233a80e8c726aee8b71211602ef72ec927289aa55be013bd89b00f": {
+    "action": "digest",
+    "conflict_note": "Recipient has muted the group, but message is benign and low-pressure with explicit permission to mute further.",
+    "evidence_ids": [],
+    "message_type": "greeting",
+    "reason": "A sports group member is informally checking interest in watching cricket highlights tonight and offering an opt-out option; low priority and no immediate action required."
+  },
   "6c26c53962364431abd5ca86339f54bd4b0760c189292c57a245f7d22776402f": {
     "action": "notify",
     "conflict_note": "",
@@ -1505,6 +1779,33 @@
     "message_type": "urgent",
     "reason": "A personal contact reports finding the recipient's passport at their building reception with a same-day time-bound deadline (before 18h) requiring immediate action to retrieve it."
   },
+  "71d61bb65114b07f5b5d2472a89fffd64e50a769928c02fa8a44066485af84db": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0146",
+      "message_0145"
+    ],
+    "message_type": "urgent",
+    "reason": "A delivery driver at the recipient's gate requires confirmation within 10 minutes to complete a time-sensitive handoff, and the recipient has a history of engaging quickly with similar messages from this sender."
+  },
+  "733851f3c4264a3cf67f632c63a8eff0a36166b9d2d27ff4dcb6f1f79a0fe900": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "urgent",
+    "reason": "A personal contact claims to have found the recipient's passport at a building reception and sets a same-day deadline (before 18h) to retrieve it, requiring immediate action to avoid loss."
+  },
+  "73d6702b44f143a102dd0de29ba743191ddd21171913a824943f47829d59c830": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0167",
+      "message_0359"
+    ],
+    "message_type": "personal",
+    "reason": "A trusted personal contact sent a casual update about availability with an explicit disclaimer of urgency; the recipient has a strong history of engagement with this sender but no immediate response is required."
+  },
   "746d027f4d5d26e2eb83f78f6df2b1e9d9dd432ebd9bb0738dfa96e745666543": {
     "action": "mute",
     "conflict_note": "G1 floor (digest for personal) overridden by explicit behavioral muting pattern from same sender",
@@ -1538,6 +1839,15 @@
     "message_type": "urgent",
     "reason": "A delivery agent at the recipient's gate requires confirmation within 10 minutes to complete a package handoff, with a hard time constraint that affects service completion."
   },
+  "76c50393947e7126e12afce32b557b61a897c9c3774f1630abd6522339a938c4": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0279"
+    ],
+    "message_type": "event",
+    "reason": "A business the user has consistently opened and replied to sent an appointment/prescription update to check before a scheduled time."
+  },
   "77323b939a1e1c40f223bf74539907fc62e66e46ec689c6fd6ff66869e44d14b": {
     "action": "notify",
     "conflict_note": "One prior mute after similar message, but high engagement pattern (96% open/reply rates) and admin status override; this is a genuine deadline.",
@@ -1556,6 +1866,16 @@
     "evidence_ids": [],
     "message_type": "promotion",
     "reason": "A group member is posting a used item for sale in a local food group; while low-priority, it is a legitimate marketplace-style promotion without urgency or safety signals."
+  },
+  "779a143053158e5c3740ae41509dad3c61880b8620e8199f23d007c82fc29240": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0206",
+      "message_0205"
+    ],
+    "message_type": "urgent",
+    "reason": "A verified business sender with strong user engagement history sent a time-sensitive ride status update requiring the recipient to check app details now."
   },
   "77f3075239d1cffbaddc79a9e8162dfc66a39ff08f0a6b9b91438bf4ab1401fd": {
     "action": "digest",
@@ -1596,6 +1916,17 @@
     "message_type": "business_update",
     "reason": "A verified business sender is requesting a product review from a customer with a history of opening similar messages; the request is low-urgency and falls within DND window, so digest timing is appropriate."
   },
+  "7943065ee3584daabb255af5cb9cf150e747a223b679f745abe9c38793b2af0e": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0068",
+      "message_0098",
+      "message_0029"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted group admin sent a time-sensitive payment deadline (5 PM today) with a late-fee consequence, requiring immediate action to avoid a penalty."
+  },
   "79a42eda78ed8a646cab1314518671d9b85ee580ecd165df3223b892a22c8d83": {
     "action": "digest",
     "conflict_note": "",
@@ -1610,12 +1941,30 @@
     "message_type": "event",
     "reason": "A group member is proposing an optional sports discussion thread with explicit permission to mute; the recipient is already in a muted group state and has not previously engaged with this sender."
   },
+  "7a41d85760b62b966b1b22e3a6fee1057acbd85dd369295b9359b9ea8d782194": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "event",
+    "reason": "A book club member is informally proposing a post-match discussion plan with explicit disclaimer of urgency; this is a low-priority coordination message suitable for later review."
+  },
   "7a596be5867e572e34fc457383c270e0e9addd5795203f662981a539282f0669": {
     "action": "digest",
     "conflict_note": "",
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "A peer in a college group is requesting shared course materials with low urgency (explicitly says 'no rush'); this is informational and can be addressed later."
+  },
+  "7ae060da7740890ce82851b50236488d342714bc0bfe4e6fb18eff0a29b0b655": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0051",
+      "message_0364",
+      "message_0037"
+    ],
+    "message_type": "event",
+    "reason": "A trusted school group admin sent a circular with an explicit request to check timing and consent details, requiring the recipient's attention."
   },
   "7b256db0d61634a0e1041be226aa92a57d437fc7380e58cb4517e41998b590d5": {
     "action": "mute",
@@ -1670,6 +2019,16 @@
     "message_type": "urgent",
     "reason": "A personal contact is requesting same-day collection of a reserved item by a specific deadline (6 PM) with competing interest from others, requiring prompt confirmation."
   },
+  "7e26068e005b98bc1984f2dd2297a2a76cab67c2bbf3acfdb4d8431dd5c459fa": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0174",
+      "message_0173"
+    ],
+    "message_type": "scam",
+    "reason": "A marketplace member requesting account number and personal financial details under a false time-pressure ('approval window closes today') is a classic credential/phishing scam; the user has muted similar messages from this sender twice before."
+  },
   "7f2f9fc51d83f4b9f5a34f6e390a054cff2239e3c0fc731b09d4f99fd8d3f41f": {
     "action": "digest",
     "conflict_note": "",
@@ -1718,12 +2077,44 @@
     "message_type": "event",
     "reason": "A verified business sender (Amazon) is informing the recipient of a time-sensitive shipping milestone with actionable delivery details; the recipient's strong historical engagement (100% open and reply rates) and verified trust signals indicate this warrants immediate attention."
   },
+  "828e0a20d71a383897111cc31aed20c51f5c1d9a6c8e81c8bb792b18d7ee7410": {
+    "action": "mute",
+    "conflict_note": "Group context would normally suggest digest, but strong behavioral pattern of user muting this sender after identical message types overrides.",
+    "evidence_ids": [
+      "message_0081",
+      "message_0082"
+    ],
+    "message_type": "promotion",
+    "reason": "Member of a college faculty group posting a sales item with urgency framing; user has muted this sender twice after similar messages and shows a 100% dismissal rate with zero engagement, indicating a pattern of unwanted promotional content."
+  },
   "8292296fcd30054f651a25db2f94d8f259b2be02c9ca7e57c5a39669223a6864": {
     "action": "digest",
     "conflict_note": "",
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "A family member sent a casual, informal message about a tentative future plan with no immediate action required or time-critical element."
+  },
+  "82a193c3bf42bd1fd9385b547f2b34d9698945ab936eac2cdada4c3f8bc71c29": {
+    "action": "digest",
+    "conflict_note": "Domain mismatch is a trust concern, but business_verified is true and recipient history shows consistent engagement without escalation; digest rather than mute per G4.",
+    "evidence_ids": [
+      "message_0110",
+      "message_0109"
+    ],
+    "message_type": "promotion",
+    "reason": "A business sender with domain mismatch sent a travel package promotion with pricing and itinerary link; the recipient has opted in to promotions and opened similar messages before without acting on them."
+  },
+  "835fe5bf42dd0d25b52314ee8d590dab86f7a860e26e14fa4ebce96da67f67fb": {
+    "action": "digest",
+    "conflict_note": "would be notify but DND demotes since it's not urgent",
+    "evidence_ids": [
+      "message_0001",
+      "message_0029",
+      "message_0043",
+      "message_0044"
+    ],
+    "message_type": "event",
+    "reason": "A trusted society admin shared a scheduled fire alarm test notice with no immediate action needed, so it's demoted to digest during the DND window."
   },
   "8464da53f38b23a73996ae604ff9d95b9f2d2597ecd54045870815d3516cc9fe": {
     "action": "digest",
@@ -1843,6 +2234,16 @@
     "message_type": "urgent",
     "reason": "A college faculty admin sent a same-day deadline reminder (5 PM cutoff) requiring immediate submission of documents to avoid rejection, with no extensions allowed."
   },
+  "8e0fe876fd4a19a932e6b28adaa7e6f089348dbf3298580e67a3d17c65a7c1e5": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0401",
+      "message_0066"
+    ],
+    "message_type": "promotion",
+    "reason": "A marketplace member posted item photos and pickup logistics for a kurta set; low priority since no immediate action is required beyond awareness."
+  },
   "8e4b6342aaa1c81b67ca12d7a3605547e1c5c94cba21320068d558d442228441": {
     "action": "mute",
     "conflict_note": "Group context would normally suggest digest floor, but behavioral history (2 prior mutes of similar content from same sender) and scam-pattern content override that.",
@@ -1862,6 +2263,16 @@
     ],
     "message_type": "business_update",
     "reason": "A verified business sender with perfect engagement history sent a time-sensitive order status update that the user has consistently opened and replied to in the past."
+  },
+  "8f4a9982b9e620b348671f070c2ea95ddac0e7dc210f8187afb8f5dbd04cba85": {
+    "action": "mute",
+    "conflict_note": "Group context and no safety ask would normally suggest digest, but behavioral history of dismissal and muting on similar content from this sender overrides.",
+    "evidence_ids": [
+      "message_0131",
+      "message_0132"
+    ],
+    "message_type": "spam",
+    "reason": "Chain-message forwarding demand with artificial urgency and superstition framing; user has muted this sender's similar messages twice before."
   },
   "8f783687f86fd8bf6bba60c7d83dae03f7ff556b13bb2cb3f508da52c1589257": {
     "action": "notify",
@@ -1911,6 +2322,13 @@
     "message_type": "business_update",
     "reason": "A group member shared market commentary on semiconductor stocks with research links; the high forwarding count and investment-tips group context warrant scrutiny, but the message contains no payment request, urgency signal, or safety concern."
   },
+  "904618ecf4a13532216575426351ecea3eea83b00f81abb901cf978f2628e280": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "greeting",
+    "reason": "A family group member sent a low-priority, no-action-needed greeting wishing peace and good vibes to the group."
+  },
   "90698ab9d5ab042b129fcb6261c261651a1e9422b9f14ae9420e7301b8dc0031": {
     "action": "mute",
     "conflict_note": "Personal conversation context would normally floor at digest per G1, but behavioral history (2 prior mutes after similar content, 100% dismissal rate) provides explicit evidence of unwanted/unsafe pattern from this exact sender, overriding the personal-sender floor.",
@@ -1920,6 +2338,13 @@
     ],
     "message_type": "scam",
     "reason": "A heavily forwarded (7x) health directive claiming to replace medical treatment with unverified herbal remedies matches the user's documented pattern of dismissing and muting similar messages from this sender."
+  },
+  "91b3e3f2a58f5c851c81bdd6aefcbf74d9d63bdaf8c52a4011a3f9eedab045b9": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "personal",
+    "reason": "A family group member sent a casual, low-urgency message about a tentative future plan with no specific time commitment or action required now."
   },
   "9300c4eb2efd8e26d328395d90f02bff21472f60db0e5b4755c1eb444ba1da69": {
     "action": "digest",
@@ -1931,6 +2356,25 @@
     "message_type": "promotion",
     "reason": "A verified travel business sent a marketing offer with an unsubscribe option, which is low priority despite the domain mismatch."
   },
+  "935b9adc3883dcfdc23dd00f58ef1ef5e27bf68b7390b3175b75d77e91944ac9": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0016",
+      "message_0256"
+    ],
+    "message_type": "forward",
+    "reason": "An 11-times forwarded generic health chain message with no real news value that this sender's recipient previously muted a similar message from."
+  },
+  "93615fdca7367ff46a32be59882a81760b869401c270e172ccfa2dd0d935dc95": {
+    "action": "digest",
+    "conflict_note": "forwarding + mute history pushes toward mute, but no safety issue or deception signal present",
+    "evidence_ids": [
+      "message_0016"
+    ],
+    "message_type": "forward",
+    "reason": "A heavily forwarded (11x) health tip with generic wellness advice from a non-close family member; user has muted similar messages before, and the forwarding request suggests low-quality chain content."
+  },
   "93fb32e4ecb3d9ee5a9edfdf4623389375d867f59fa0ad8b21ea444b55c4db0d": {
     "action": "digest",
     "conflict_note": "forwarded health advice in family group is benign but repetitive given mute history",
@@ -1940,6 +2384,16 @@
     "message_type": "forward",
     "reason": "A highly forwarded (11x) health advice post from a non-close group member with no safety signals; user has muted similar content from this sender before, warranting low priority."
   },
+  "948b018e68a6d47f89845cbf13e893990c21837e068d14229da41ebded68d41d": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0230",
+      "message_0371"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted contact with whom the user has consistently engaged is requesting the user remain available for the next 30 minutes to monitor a system rollback and failed jobs — a time-critical operational task requiring immediate attention and presence."
+  },
   "949232f0b2cba37f948753512af712c0ff6a8de9426469e5da0a31cdb8bc59ae": {
     "action": "notify",
     "conflict_note": "",
@@ -1948,6 +2402,16 @@
     ],
     "message_type": "payment",
     "reason": "A verified business sender notified the user of an available payment or account update requiring review in their banking app, which is time-sensitive financial information."
+  },
+  "94964dae40075cbf44e39dd803f3f40dbb355c8fb89b4c4d6d9fa9ed367870b8": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0011",
+      "message_0242"
+    ],
+    "message_type": "business_update",
+    "reason": "A verified business sent a routine feedback request with no time-sensitive demand; user has consistently opened similar messages without acting on them."
   },
   "95061fbe5b7ccc9205dcde54791cb5c6fab6fc7c5c6ca748212f5577eafb0c14": {
     "action": "digest",
@@ -1962,6 +2426,16 @@
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "A sports group member is proposing a casual thread about cricket highlights with explicit opt-out language; low urgency and the recipient has already muted the group."
+  },
+  "9614ff3f33b2e5812b4f2134409ceeb6bf08f15ad37f0313538ae42706d40ee5": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0362",
+      "message_0228"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted personal contact is requesting immediate action on a work incident with a hard 20-minute deadline and explicit escalation risk."
   },
   "9656a389afc75718873912ad49db56f3b62300451e23e0de370587334e4f0c52": {
     "action": "mute",
@@ -2095,6 +2569,13 @@
     "message_type": "event",
     "reason": "A trusted personal contact sent a same-day location and time-specific update for an activity with an access instruction that requires the recipient to act within a narrow window (before 7:15)."
   },
+  "9d627919c8bef4d9d21fa54ff1cc719d71f2df3148bec52d14094d301c471a65": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "promotion",
+    "reason": "A group member posted a used item for sale in a local food group with pickup details, typical marketplace-style promotion content that does not require immediate action."
+  },
   "9e4012bcb5fd953cbe25ff4e53f15787643a794780a8f8e26b2cd897fa5b6315": {
     "action": "digest",
     "conflict_note": "Domain mismatch + verified account; digest balances trust signal against mild security concern.",
@@ -2105,6 +2586,22 @@
     ],
     "message_type": "promotion",
     "reason": "A travel promotion from a verified business with a domain mismatch; the user has consistently opened similar messages without engaging, and allows promotions, but the security concern warrants non-intrusive delivery."
+  },
+  "9e797951c73953f7e032487469086e7762e95488dafea040c801e27afd9429e0": {
+    "action": "digest",
+    "conflict_note": "Scheduled same-day delivery suggests urgency, but disclaimer of payment/OTP requests and DND window lower priority to digest.",
+    "evidence_ids": [],
+    "message_type": "event",
+    "reason": "A verified business sent a delivery appointment reminder for today; while time-sensitive, the explicit disclaimer that no payment or OTP is required removes urgency, and in_dnd_window demotes notify to digest per G2."
+  },
+  "9f011b7aef40f3ea14ec890ed5c1a362851ed9c48be101741356365d9194d7ac": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0281"
+    ],
+    "message_type": "promotion",
+    "reason": "Verified business sending a service promotion to an opted-in recipient with a history of opening but not acting on similar messages."
   },
   "9f356fb25604fa14bf7fadf955208309c9083733f2e4ea06c9a8b13cfbed0180": {
     "action": "notify",
@@ -2165,6 +2662,16 @@
     "message_type": "business_update",
     "reason": "A verified business sender is distributing a safety advisory notice (explicitly stating they never ask for OTP/payment), which is informational and low-urgency despite the 'tap to view' call-to-action."
   },
+  "a2279bfdbc0a4a8781dbed4276fd1a96c016574704d3ddcab38800cd35eac3ee": {
+    "action": "digest",
+    "conflict_note": "High forwarded_count suggests possible low-value reshare, but user's strong historical engagement with this sender and lack of any scam signals support digest rather than mute.",
+    "evidence_ids": [
+      "message_0113",
+      "message_0401"
+    ],
+    "message_type": "promotion",
+    "reason": "A marketplace member posted a classified item for sale with price and pickup details; forwarded 8 times, which raises scrutiny, but content is a routine secondhand listing with no payment request, no urgency demand, and the sender has a history of user engagement (replied to 60% of similar messages)."
+  },
   "a35d7759b7105846d5df2430b66163733cd836a01ebc1be2dbd4705f15ef0f1c": {
     "action": "notify",
     "conflict_note": "",
@@ -2174,6 +2681,16 @@
     ],
     "message_type": "urgent",
     "reason": "A trusted personal contact is requesting immediate availability for a time-sensitive operational task (rollback monitoring) that requires the recipient to stay online for the next 30 minutes."
+  },
+  "a3931290a03d9fa094588e50af2bd6f072c4aa307eb97eba53df3c7802633bc0": {
+    "action": "digest",
+    "conflict_note": "Trust signals (verified, high engagement) offset by domain mismatch and vague link reference.",
+    "evidence_ids": [
+      "message_0137",
+      "message_0138"
+    ],
+    "message_type": "business_update",
+    "reason": "A verified business sender with strong historical engagement (100% open rate) is requesting survey participation; however, a domain mismatch flag and the absence of a specific link in the message content warrant lower priority despite trust signals."
   },
   "a3bfab3a8296bfc340683e04ecda69ed38134eb590b7a2f9c308666fc5acb67e": {
     "action": "mute",
@@ -2240,12 +2757,32 @@
     "message_type": "greeting",
     "reason": "A family group member sent a low-priority greeting with no actionable request or time-sensitive content."
   },
+  "a67e62a3b557f61eab20405ba7464aa165fcd315de31a3e025a5e018e2c3b886": {
+    "action": "mute",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0224"
+    ],
+    "message_type": "promotion",
+    "reason": "Marketplace member posting a product offer in a group the recipient has muted; user has consistently dismissed and muted all messages from this sender (7 of 7 muted after), including a highly similar prior message."
+  },
   "a6a0586bdef15951db7400212a7422c64d5a7536c57cdac0a23876ebb85a9c08": {
     "action": "digest",
     "conflict_note": "",
     "evidence_ids": [],
     "message_type": "event",
     "reason": "A society admin sent a potluck registration update with a soft deadline (next Sunday) that requires the user to act at their own convenience, not immediately."
+  },
+  "a6ab46b0b0b92ef062fea496de55b15f0c459765036422145b1580647d7660d4": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0153",
+      "message_0154",
+      "message_0291"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender notified the recipient of a same-day return pickup window (2–5 PM) requiring specific preparation and presence, which demands immediate awareness and action within a narrow timeframe."
   },
   "a7839b165f8f536075a9decfd6558b3a5673350f3647f0a5cb459f216b923407": {
     "action": "digest",
@@ -2314,6 +2851,17 @@
     ],
     "message_type": "event",
     "reason": "A verified business sender (Amazon) sent a time-sensitive order status update with actionable delivery information; the recipient has consistently opened and replied to similar messages from this sender."
+  },
+  "adbc4ca95b920a1d96b5c637f8426094d10d9f46844a6f435a48150d7a863822": {
+    "action": "mute",
+    "conflict_note": "G1 protects personal senders from mute on tone alone, but the behavioral signal (muted_after_count: 7, dismissed_rate: 1.0, replied_rate: 0.0) is an explicit exception condition indicating a pattern of user-initiated mutes that overrides the tone-based protection.",
+    "evidence_ids": [
+      "message_0050",
+      "message_0224",
+      "message_0383"
+    ],
+    "message_type": "personal",
+    "reason": "Sender has a pattern of 7 mutes-after with 100% dismissal rate over a sample of 7 messages, and the recipient has never replied; this appears to be unwanted persistent contact despite consistent non-engagement."
   },
   "adc4c4ca6b5b498234e2268d656ca85537d9aea925d8202b3d1028c3ad8e28e3": {
     "action": "digest",
@@ -2435,6 +2983,17 @@
     "message_type": "promotion",
     "reason": "A marketplace group member posted item photos and pickup details, which is a sales post but not urgent enough to interrupt now."
   },
+  "b4b6f31ae0b978f0a9233c9937a8300799c759d7869d70a36ce0de3a1ebaab33": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0167",
+      "message_0359",
+      "message_0226"
+    ],
+    "message_type": "personal",
+    "reason": "A personal update from a trusted sender explicitly says nothing urgent and asks to talk tomorrow, so it can wait."
+  },
   "b5c7d0ab0329c8c581bc5f3f4a15695a71e4e6614ea2ec2a380b5c22d13e4a28": {
     "action": "digest",
     "conflict_note": "",
@@ -2456,6 +3015,24 @@
     "message_type": "urgent",
     "reason": "A school group admin sent a time-sensitive circular requiring parental attention to timing and consent details."
   },
+  "b716a7150f0c99bf3c720159881ac7365de87f9160325918d983c16b33d2c2e0": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "personal",
+    "reason": "A family group member shared a casual personal update with no time-sensitive content or action required."
+  },
+  "b729f0dd94ccc3e414ae7d4c47a80250d4c0177cd1e697c9b96fa4ed4111daef": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0372",
+      "message_0280",
+      "message_0393"
+    ],
+    "message_type": "personal",
+    "reason": "A family member sent a warm check-in asking to be called back, and the recipient has consistently engaged with this sender's messages."
+  },
   "b81e96d3bc4b09b444e1120e36a04204f806e16886a48f2913d99eec76facb4a": {
     "action": "notify",
     "conflict_note": "",
@@ -2465,6 +3042,16 @@
     ],
     "message_type": "urgent",
     "reason": "A trusted coworker admin sent a same-day meeting confirmation with time-sensitive action items that must be closed tonight to avoid operational issues tomorrow."
+  },
+  "b9115c4b91ef9bc05c6058eeace9348d7f68f2391b58302da6066f2d6f532f92": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0249",
+      "message_0228"
+    ],
+    "message_type": "urgent",
+    "reason": "A coworker admin sent a time-sensitive meeting reminder with specific preparation requirements and an explicit same-day deadline to close action items, requiring immediate recipient attention."
   },
   "b922221940893bb5d12d609917d8b8c1ab181f2e55cd8b003c2c101d4b0ebfb6": {
     "action": "mute",
@@ -2538,6 +3125,17 @@
     "message_type": "spam",
     "reason": "Heavily forwarded (9 times) clickbait health claim with viral pressure tactics ('share in all family groups', 'don't ignore'); user has muted 8 prior similar messages from this sender with 100% dismissal rate."
   },
+  "bd77e9543599c86b07f685028fbba38e8c6e38fcc79364d91d34ec2a608d8b73": {
+    "action": "mute",
+    "conflict_note": "Group context does not override clear behavioral signal: 11/11 muted-after history.",
+    "evidence_ids": [
+      "message_0039",
+      "message_0040",
+      "message_0241"
+    ],
+    "message_type": "spam",
+    "reason": "Heavily forwarded (10x) health claim with manipulative urgency ('before night') and social pressure ('share in family groups') matching the user's established pattern of muting similar messages from this sender."
+  },
   "be3b44f8c4404216d9a8f57a8eb51b2d339e6231c5cf23c8fa98990e45ab1576": {
     "action": "digest",
     "conflict_note": "",
@@ -2546,6 +3144,15 @@
     ],
     "message_type": "promotion",
     "reason": "A verified business sent a promotional offer with discount details and an unsubscribe option; the user has opted in to promotions and consistently opens similar messages but does not act on them, making this low-priority."
+  },
+  "be502d4e107c330124aba01e48c3037dc2382abeacb2b33450da3dccc5890317": {
+    "action": "notify",
+    "conflict_note": "domain_mismatch flag but strong trust and history support notify",
+    "evidence_ids": [
+      "message_0222"
+    ],
+    "message_type": "event",
+    "reason": "A verified business contact sent a schedule change for tomorrow's airport pickup that the recipient needs to know before their trip."
   },
   "be89f3a5ff252e6010cd56dc9001dbd2ef11211ac218bd169a012b7201e20d55": {
     "action": "mute",
@@ -2595,6 +3202,17 @@
     "message_type": "promotion",
     "reason": "A marketplace group member is selling a used item at a fixed price with a pickup arrangement; the user has engaged with this sender before and opens similar messages consistently, but this is low-urgency commerce content."
   },
+  "c02285819c28f6ecc01b137866e48defefc8587cfb01dea84066ac243b48cad2": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0113",
+      "message_0332",
+      "message_0066"
+    ],
+    "message_type": "promotion",
+    "reason": "A marketplace group member is selling a used kurta set with price and pickup details, which is a routine sales post best shown later."
+  },
   "c05e76de05b3e9458b808b5a564927ece030a93db6802c49c3b242d49f40c1a7": {
     "action": "notify",
     "conflict_note": "",
@@ -2620,6 +3238,17 @@
     "message_type": "personal",
     "reason": "A new contact found the recipient's number through a volunteer sheet and is asking about event coordination; legitimate but not urgent enough to interrupt immediately."
   },
+  "c185d8fed80cb3a1075b65422a9b17b5b87c7b24d1e3ac5f3368d3012e6fecd3": {
+    "action": "mute",
+    "conflict_note": "Group context and family relationship would normally favor digest, but sender's consistent history of muting identical content type overrides this.",
+    "evidence_ids": [
+      "message_0014",
+      "message_0013",
+      "message_0077"
+    ],
+    "message_type": "forward",
+    "reason": "Heavily forwarded (8x) motivational content in a family group where the user has muted all 11 previous similar messages from this sender and never engaged with them."
+  },
   "c24c8a37d3d7617b371fcd4052fd719d58a30dab79c77da5de1c61855d26f24f": {
     "action": "digest",
     "conflict_note": "",
@@ -2633,6 +3262,17 @@
     "evidence_ids": [],
     "message_type": "business_update",
     "reason": "A verified business sent a routine monthly statement notification that requires no immediate action; review can occur at the recipient's convenience."
+  },
+  "c36f87ff8f656a309e3e6b5b3c78400ac208b7f1d419845be71e25b64f51bf7e": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0001",
+      "message_0029",
+      "message_0043"
+    ],
+    "message_type": "urgent",
+    "reason": "A group admin sent a time-sensitive message in Hindi indicating water/tank delivery with a 10-minute window before the driver leaves, requiring immediate action from the recipient."
   },
   "c3df8051282af38a7c0da34dd14db01018d8c4e8c4948370e3623b187a3e7692": {
     "action": "digest",
@@ -2654,6 +3294,15 @@
     "message_type": "event",
     "reason": "A trusted personal contact sent an informational update about a scheduled standup with optional pre-reading; no immediate action is required tonight."
   },
+  "c48a90a10b4dba35117d3b18768b5bf73e83f4c7f6b4d462d659879976c9ae46": {
+    "action": "mute",
+    "conflict_note": "G1 does not apply—conversation is group, not personal; behavioral pattern (muted_after_count: 11, dismissed_rate: 1.0) overrides content tone.",
+    "evidence_ids": [
+      "message_0014"
+    ],
+    "message_type": "forward",
+    "reason": "Forwarded motivational message in a family group where the recipient has muted all 11 prior messages from this sender and consistently dismissed similar content."
+  },
   "c53669df9323d7c1b4d29995cf712136d91af5bb818b8a4329bb8444a116cb49": {
     "action": "notify",
     "conflict_note": "event vs urgent: classified as event because the deadline is informational (pickup by 6 PM today) rather than a safety issue or system breakdown; however, the time window is narrow enough and the conditional hold (others waiting) is concrete enough that notify is warranted despite group context.",
@@ -2662,6 +3311,17 @@
     ],
     "message_type": "event",
     "reason": "A marketplace member is holding an item reserved for the recipient with a same-day 6 PM deadline and competing interest from others, requiring a time-sensitive response to confirm collection or release the hold."
+  },
+  "c5c2951867e83e5245449b0bbe51db30b7129996532770835ee1a3219dd657b0": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0249",
+      "message_0118",
+      "message_0117"
+    ],
+    "message_type": "event",
+    "reason": "A trusted personal contact shared non-urgent prep notes for tomorrow's standup with no immediate action needed tonight."
   },
   "c5e289d4a3146332bec9e3490c21ee7e4d6679e320d4b6ed08445adde4cbccb7": {
     "action": "digest",
@@ -2681,6 +3341,16 @@
     ],
     "message_type": "event",
     "reason": "A verified business sender with strong engagement history (100% open and reply rates) sent a time-sensitive ride status update requiring the user to check app details."
+  },
+  "c789fef72f160b40d1508c1e121ca1b4cb154238e0c40b531ce0c629f9b98d54": {
+    "action": "mute",
+    "conflict_note": "Group is family-type and recipient is mentioned, but behavioral history (2 prior mutes, 100% dismissal rate, zero engagement) and forwarded_count=7 override the weak trust signal.",
+    "evidence_ids": [
+      "message_0136",
+      "message_0135"
+    ],
+    "message_type": "spam",
+    "reason": "A heavily forwarded chain-letter requesting the recipient to propagate it to others is a classic spam pattern; the user has muted similar messages from this sender twice before and dismissed all prior messages from them."
   },
   "c7f6f454523d37d9386885b39d50f629f216b13e0dfad6810f2e0a8c38dda239": {
     "action": "digest",
@@ -2706,6 +3376,19 @@
     "message_type": "personal",
     "reason": "A group member is casually planning a post-match discussion with no time pressure; the sender explicitly notes no urgency and will poll later for attendance."
   },
+  "c9b7fe3eef6401eb6b4aa397e8417812d76c0bdcb653229fc63cfd987eaf68cf": {
+    "action": "mute",
+    "conflict_note": "Personal conversation type would normally floor at digest (G1), but behavioral signal (11 consecutive mutes, zero opens/replies) and forwarding amplification override—this is unwanted repetitive content, not genuine personal communication.",
+    "evidence_ids": [
+      "message_0013",
+      "message_0014",
+      "message_0039",
+      "message_0077",
+      "message_0123"
+    ],
+    "message_type": "greeting",
+    "reason": "Highly forwarded message (11 times) from a family group member with a consistent pattern of user dismissals and mutes across 11 prior similar messages; recipient has never replied to this sender and the group is muted."
+  },
   "ca292c6a6fca8887cb58e6811047adbcc5cea971e2f82cc8cc0ad0a5c4411f55": {
     "action": "mute",
     "conflict_note": "",
@@ -2727,6 +3410,13 @@
     "message_type": "urgent",
     "reason": "A trusted personal contact is asking for immediate input on a time-sensitive medical decision that requires the recipient's participation."
   },
+  "ca4a27d59ff404fd7548caa4af95a0a3538477a2b97f77a98cdc7077aae7d08c": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "personal",
+    "reason": "A personal contact from an unfamiliar sender asking about volunteer coordination; no urgent action is required at this moment and there are no trust signals or behavioral history to elevate it."
+  },
   "ca86f76258e6a5beb6ea0f9988c397872ae770821f746d9561f4f89070e1a910": {
     "action": "digest",
     "conflict_note": "",
@@ -2736,6 +3426,17 @@
     ],
     "message_type": "business_update",
     "reason": "A trusted colleague shared preparatory notes for an upcoming standup meeting with no immediate action required tonight, suitable for the recipient to review at their convenience before the morning meeting."
+  },
+  "caa72a94ebf1b1a7b042473ad81d9aaffeba085bb675fce2b732bcd0d247d4f1": {
+    "action": "digest",
+    "conflict_note": "Domain mismatch is a trust signal worth noting, but the sender is verified and the content is a standard promotional offer with no payment/OTP request, so it does not warrant mute.",
+    "evidence_ids": [
+      "message_0007",
+      "message_0033",
+      "message_0272"
+    ],
+    "message_type": "promotion",
+    "reason": "A verified business with a domain mismatch sent a travel package promotion with pricing; the user has consistently opened similar messages without acting on them, and promotions are opted in but lower priority."
   },
   "cb68ac51c34830fc1ef86546f11c47952dda18059940a162ff93dbceb5fe1364": {
     "action": "digest",
@@ -2790,6 +3491,15 @@
     "message_type": "personal",
     "reason": "A family member sent a casual, non-urgent check-in message; the sender explicitly states nothing is urgent and the user has a strong history of engagement with this sender."
   },
+  "d0839a16bf3553efbb45b5e5f8cf6e56191f06f9ac8f13b9386f8e80df459760": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0372"
+    ],
+    "message_type": "greeting",
+    "reason": "A family group member sent a casual, low-priority check-in with an explicit disclaimer of urgency; the recipient has a strong history of engagement with this sender but no immediate action is required."
+  },
   "d08cb0de10f5b59ccba222efb9e1bd3392310397d84d01da323428826bfc1d34": {
     "action": "notify",
     "conflict_note": "No prior behavioral data available; low-trust sender but high contextual urgency and personal conversation type support notify under G3.",
@@ -2831,6 +3541,13 @@
     "message_type": "event",
     "reason": "A group admin sent a society potluck registration reminder with a soft deadline (next Sunday) and no immediate action required in the thread."
   },
+  "d3e4fe56f16371a571d82307ecd3151fc624c9cfff8b7068771d85add1e30102": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "business_update",
+    "reason": "A verified business sender has shared a safety advisory notice (explicitly stating the brand never requests OTP or payment), which is informational and low-urgency despite the attachment."
+  },
   "d45337ac2069dbf7cc1e68b2e3bea4d59b15fef60666333e517c890ca7d36eb4": {
     "action": "notify",
     "conflict_note": "",
@@ -2840,6 +3557,16 @@
     ],
     "message_type": "event",
     "reason": "A verified business sender provided a time-sensitive delivery update for an order the user is actively tracking, with a 100% historical open and reply rate signaling this user values such notifications."
+  },
+  "d5951830bc2c1ca7b653bc6dda050fc920e61e310021723b9aa481e674075cf4": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0243",
+      "message_0102"
+    ],
+    "message_type": "business_update",
+    "reason": "A verified business sender with high historical engagement (opened 100% of prior messages, replied to one) is notifying the user of an account or payment update requiring review in their banking app."
   },
   "d680a3a081f554f560d08d4e97a45ad551739240e943a6ed158083cb1a2900b2": {
     "action": "digest",
@@ -2895,6 +3622,15 @@
     "message_type": "payment",
     "reason": "A verified business sender is prompting account or payment review, which typically requires timely user attention and has a 100% historical open rate from this recipient."
   },
+  "d94c0bb8407b9302b82537a477a08f03c9678ef9c7b92b6a377bedac4b39d4d0": {
+    "action": "notify",
+    "conflict_note": "Domain mismatch present but sender is business-verified and account is well-established (4304 days); recipient has strong engagement history with this sender (opened and replied to similar messages).",
+    "evidence_ids": [
+      "message_0222"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender notified the recipient of a time-sensitive change to tomorrow's airport pickup (moved to 6:15 AM), requiring awareness and potential coordination before the early morning departure."
+  },
   "daf4dfeffe95fdfe58a10dc89180a2203dab1bf919f69035aa676688448c2283": {
     "action": "digest",
     "conflict_note": "",
@@ -2925,6 +3661,13 @@
     ],
     "message_type": "event",
     "reason": "A school admin sent a time-sensitive field trip circular with same-day action requirements (consent signature, bus list closure this evening) that requires immediate parental attention."
+  },
+  "dbb4e70dcf72ca09f41876bad14c19245d29c2a2266da8aa3e597fb24a0d4f13": {
+    "action": "digest",
+    "conflict_note": "G2 demotes notify to digest due to in_dnd_window; G1 floor is digest for personal senders without behavioral warning signals",
+    "evidence_ids": [],
+    "message_type": "greeting",
+    "reason": "A personal message from a sender with consistent engagement history, but the recipient is in a do-not-disturb window and the content is a casual, non-urgent check-in that does not require immediate response."
   },
   "dc08f9069547b376da37afed8d3b66021d574b866c3c6995b6d307c382dd09db": {
     "action": "digest",
@@ -2963,6 +3706,16 @@
     "message_type": "event",
     "reason": "A book club member is proposing a post-match discussion with explicit disclaimer of urgency and a poll to follow later; this is an informational coordination message, not time-critical."
   },
+  "dfc6e8a8bd4f9244d5361f11dffb37c39165c0d9c5bcba42dd3d72e1a192cb5c": {
+    "action": "mute",
+    "conflict_note": "Group context would normally lower suspicion, but behavioral signals (repeated muting, no prior engagement) and message pattern (deadline + link + screenshot request) override that.",
+    "evidence_ids": [
+      "message_0099",
+      "message_0100"
+    ],
+    "message_type": "scam",
+    "reason": "Sender has a strong history of user mutes after similar messages (2 muted instances), combined with a payment deadline, link provision, and request for screenshot evidence—a classic phishing pattern."
+  },
   "dfe18292c01a14356a3e5998cf8fdfebd3358a83a36686da116afcfba672e097": {
     "action": "digest",
     "conflict_note": "",
@@ -2973,6 +3726,13 @@
     "message_type": "personal",
     "reason": "A trusted personal contact sent a routine update about their availability, explicitly stating nothing is urgent and deferring conversation to tomorrow morning."
   },
+  "e004c5fa730043cb8af884bc40b4d00cd574cc23a2a39573cf46e0893410bd06": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "greeting",
+    "reason": "A casual, non-urgent group message inviting optional participation in a social activity; low priority and safe to show in a digest."
+  },
   "e098b1be366916e803e7ada9eeea8d38a701c4c82d31ba45b4335b5231370ba7": {
     "action": "mute",
     "conflict_note": "personal conversation type would normally floor at digest per G1, but behavioral history (muted_after_count=2, dismissed_rate=1.0, opened_rate=0.0) shows established pattern of rejection of this sender's similar messages, overriding the personal-conversation floor.",
@@ -2982,6 +3742,17 @@
     ],
     "message_type": "spam",
     "reason": "Heavily forwarded (7x) dubious health advice with a urgency/sharing pattern that the recipient has consistently dismissed and muted from this sender before."
+  },
+  "e09e9594b0af203d3c224d277b0ba318ddfcf93e885b2f58c76cc6319560d50c": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0401",
+      "message_0066",
+      "message_0113"
+    ],
+    "message_type": "promotion",
+    "reason": "A marketplace group member posted item photos and pickup details, which is a routine sales post to review later."
   },
   "e0cba06bd7089cba4d0b1b1bd8b9a2d3a1eb4a1c07aa83e1a68b7e5418e36310": {
     "action": "digest",
@@ -3123,6 +3894,16 @@
     "message_type": "urgent",
     "reason": "A trusted group admin (faculty advising) sent a same-day deadline reminder with a hard cutoff (5 PM today) that requires immediate action to submit documents before the portal locks."
   },
+  "e50f8e669f1942ed29d66a57cba6089f9165718c0768f00dd8397e0df0cab5c8": {
+    "action": "mute",
+    "conflict_note": "Forwarded count and marketplace group context do not override the phishing pattern and user's consistent dismissal/muting of similar content from this sender.",
+    "evidence_ids": [
+      "message_0096",
+      "message_0095"
+    ],
+    "message_type": "scam",
+    "reason": "Message uses classic phishing signals (shortened URL with 'verify' in the slug, false urgency, account-check pretext) and sender has a documented pattern of similar muted messages from this user."
+  },
   "e585c361bc64fc28136f23df992db6dc6f47ef9c7a10576016c3500f5e5a717d": {
     "action": "mute",
     "conflict_note": "Forwarding amplifies risk; behavioral pattern of dismissal and prior mutes on similar content from sender is decisive.",
@@ -3132,6 +3913,26 @@
     ],
     "message_type": "scam",
     "reason": "Forwarded message with classic phishing signals (shortened URL, false urgency, vague 'account check' demand) from a marketplace member with no prior relationship; user has muted similar messages from this sender twice before."
+  },
+  "e5ddaa081c7b9de2f20f6f8a9b7cc4f459458b0b052b2b017dadd82fd3e97893": {
+    "action": "digest",
+    "conflict_note": "domain_mismatch flagged but business_verified true and no payment/OTP ask, so treated as promotion not scam",
+    "evidence_ids": [
+      "message_0110",
+      "message_0109",
+      "message_0007"
+    ],
+    "message_type": "promotion",
+    "reason": "A verified travel business sent a routine holiday-package promotion with pricing and an unsubscribe option, which fits low-priority marketing rather than anything urgent."
+  },
+  "e7103315d35d929ce34e600b3419f20bc29757aa79dcdf04fb7ba6e59b0c449b": {
+    "action": "digest",
+    "conflict_note": "G2 demotes notify to digest due to DND window; message is not urgent or safety-critical.",
+    "evidence_ids": [
+      "message_0296"
+    ],
+    "message_type": "business_update",
+    "reason": "A verified business sender is requesting a product review from an existing customer with a history of opening similar messages; the request is low-urgency and should be deferred per DND window policy."
   },
   "e76cdb8768ae8b17c03cdd1e343aa28a31271d60d802c050e9102a1b510ec43d": {
     "action": "mute",
@@ -3149,6 +3950,25 @@
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "A stranger is asking for identity confirmation via a number obtained from an indirect source, with no prior relationship history; low urgency framing ('no urgency') and no time-critical demand justify digest rather than mute under G1, since there is no explicit safety signal or behavioral history to trigger muting."
+  },
+  "e7fb84e19b64894ceb8525bfe926dd35c39660188eb25fc3a507a50917f8af0c": {
+    "action": "mute",
+    "conflict_note": "Recipient has pre-muted the group; behavioral pattern (7/7 muted-after, 0% open rate) overrides the neutral content tone.",
+    "evidence_ids": [
+      "message_0115",
+      "message_0335",
+      "message_0050",
+      "message_0383"
+    ],
+    "message_type": "promotion",
+    "reason": "Marketplace member posting a sales item in a group where the recipient has muted all 7 similar previous messages from this sender and consistently dismissed such content."
+  },
+  "e9afde2848781bbb332e61440fe75eafd14cd6dd038f36d827c88c634bf88f2c": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "promotion",
+    "reason": "A verified business sent a promotional offer with a same-day discount deadline, but no immediate action is required beyond awareness of the sale window."
   },
   "e9b692a3373210ff4ce0e66b7104b577426aeab1c4ed843e11fe55c305b880d8": {
     "action": "digest",
@@ -3168,6 +3988,27 @@
     ],
     "message_type": "event",
     "reason": "Scheduled maintenance notice from a trusted group admin about a tomorrow morning fire alarm test; informational and time-bound but not requiring immediate action tonight, and in_dnd_window is active."
+  },
+  "ea47bf9ba79573ead09cc6aef0c6de180d331e3eb45ce9c94f153bcd2a1b73b6": {
+    "action": "notify",
+    "conflict_note": "DND window normally demotes to digest, but G3 applies: genuine time-critical need (deadline this evening) in a trusted school group context overrides DND.",
+    "evidence_ids": [
+      "message_0051",
+      "message_0364",
+      "message_0037"
+    ],
+    "message_type": "event",
+    "reason": "A school admin sent a time-sensitive field trip circular with a same-evening deadline for bus list closure, requiring parental action (consent signature, ID card preparation) before tomorrow."
+  },
+  "eaabebfe70bd4fe80307d74f45d82f9e56f46de064c6beb284230ea0ccb91ec0": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0011",
+      "message_0242"
+    ],
+    "message_type": "business_update",
+    "reason": "A verified business sending a routine feedback request; user has consistently opened similar messages but not engaged, indicating low priority despite being legitimate."
   },
   "eac20fcfc662fbe320990a52ce25076687a930d390a6b1221bbec084ef3d62b4": {
     "action": "notify",
@@ -3236,6 +4077,16 @@
     "message_type": "event",
     "reason": "A society admin shared a scheduled fire alarm test notice that doesn't require immediate action, so it's held for later given the DND window."
   },
+  "ed5b818fff401351eed331c88018dca87bd7c1bf66fb59e2857ecccae66ffc1c": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0234",
+      "message_0376"
+    ],
+    "message_type": "event",
+    "reason": "A trusted personal contact sent a same-day logistics update for an activity with a specific time deadline (before 7:15) and access instructions that require immediate attention to avoid being locked out."
+  },
   "ed69d89b67f563b8de9316a8b19a01e99ec09cd6986e1bee0231f9af648394fa": {
     "action": "notify",
     "conflict_note": "",
@@ -3244,6 +4095,13 @@
     ],
     "message_type": "payment",
     "reason": "A verified business sender notified the user of a payment or account update requiring review in their banking app; the user has a strong history of engaging with similar messages from this sender (100% open rate, replied to prior similar message)."
+  },
+  "ee10d8c4c9f29e96ab7c7be042edfd83309e6334fee9f7aafc00481c65c6d381": {
+    "action": "digest",
+    "conflict_note": "",
+    "evidence_ids": [],
+    "message_type": "personal",
+    "reason": "A stranger asking to verify identity with no urgency; low priority but safe to respond to later."
   },
   "ee58aef924d2779480948486700d8bc26a1280436ff780c21a4c711e13b259c3": {
     "action": "digest",
@@ -3351,12 +4209,44 @@
     "message_type": "event",
     "reason": "A trusted personal contact sent a same-day logistical update for a scheduled activity with a specific time-sensitive gate access detail requiring the recipient to arrive before 7:15 PM."
   },
+  "f4f3765f863954596afbb8e8757bef7d5cdbab690f3668020750cef075bbfaab": {
+    "action": "digest",
+    "conflict_note": "in_dnd_window=true demotes notify to digest per G2; muted_after_count=1 noted but content is legitimate maintenance notice, not spam",
+    "evidence_ids": [
+      "message_0001",
+      "message_0029",
+      "message_0043",
+      "message_0044"
+    ],
+    "message_type": "event",
+    "reason": "A group admin sent a scheduled maintenance notice (fire alarm test tomorrow 9–11 AM) that is informational and does not require immediate action tonight, but should be shown to the user before the test window."
+  },
   "f65f8f25fada7bb481eefbaf1d0a3df781e7f54bb517319d3aff1e8994a3715e": {
     "action": "digest",
     "conflict_note": "",
     "evidence_ids": [],
     "message_type": "personal",
     "reason": "An extended family member sent a casual, informal message about a tentative future meetup (doctor or dinner) with no confirmed time, requiring no immediate action."
+  },
+  "f9b8fd65f3b842aff9fd2425d3b3142881358c78a947a6ae4519921fc4ed0af0": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0375",
+      "message_0284",
+      "message_0176"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted college faculty admin sent a same-day deadline reminder (5 PM today) requiring immediate action to submit internship documents before the portal locks."
+  },
+  "faa2df7bf09ad997df69631f30d12265ce599de82e770080370baca20e17e377": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0279"
+    ],
+    "message_type": "event",
+    "reason": "A business sender with strong engagement history (100% open and reply rates over 5 messages in 180 days) sent a time-sensitive health appointment or prescription reminder requiring action before a scheduled time."
   },
   "faa71a8bb35b9715eaa4126260fc5f477047631893fff585355e263195ffa846": {
     "action": "digest",
@@ -3425,6 +4315,28 @@
     ],
     "message_type": "promotion",
     "reason": "A marketplace group member is selling a used item with price and pickup details, which is a routine sales post to hold for later."
+  },
+  "feae2ddae6ad2853e5f4016ad4af48dae00931c1132398773cf41172abc598f2": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0005",
+      "message_0245"
+    ],
+    "message_type": "event",
+    "reason": "A verified business sender with strong engagement history is notifying the recipient of a health-related appointment or prescription update ready for review before a scheduled time."
+  },
+  "feafb91d0225595aaf2793a7c8bc3b1d4aa51f292bb8d3698dc9c8c73f1b0b0d": {
+    "action": "notify",
+    "conflict_note": "",
+    "evidence_ids": [
+      "message_0359",
+      "message_0167",
+      "message_0226",
+      "message_0168"
+    ],
+    "message_type": "urgent",
+    "reason": "A trusted personal contact is requesting immediate input on a time-sensitive medical appointment decision that cannot be made unilaterally."
   },
   "ff6efd2983ad0ba69d3375d5ea84149353ea7300f046015070fb0679b7c70624": {
     "action": "mute",

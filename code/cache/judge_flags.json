@@ -55,9 +55,17 @@
     "coherent": false,
     "flag_reason": "The reason claims 'trusted group admin' sent the message, but evidence_0030 shows a new member posted a separate maintenance QR, contradicting the trusted admin claim and potentially indicating this could be a security concern rather than a straightforward operational update."
   },
+  "043c3cd2cf88e9c7748b324020f12d7eff864e659fbad4a907e44534463920f0": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "050f3aa362eb0e6587ba0bc339b505c3b4a029602a99df305c8308bd8caee115": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "063cc8a9028e01ed39ccfe2b6a269a92117067e1cff46f02e90291ec7620b838": {
+    "coherent": false,
+    "flag_reason": "The reason claims 'consistent engagement history' but the FEATURES block shows behavior.replied_rate=0.0 across a sample of 3 messages, contradicting the assertion of engagement."
   },
   "0646587ee42373027fec4ca9a6609f2c5b015f1c9488a2d7af99822e7948ec42": {
     "coherent": true,
@@ -123,6 +131,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "09f439db9d02ff3d673f0dd1f1e57501347597f65798e7f8a8fea86c28f60622": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "0a36b96969d3f893e002edd88520a37da834a73a6b19bfdc53407008c824ca66": {
     "coherent": true,
     "flag_reason": ""
@@ -146,6 +158,10 @@
   "0c099837eca609c80dbf80ca042677b6be67cdec705819ad99d9df0dba8dddc1": {
     "coherent": false,
     "flag_reason": "The reason claims the message is a scam, but the content contains no actual scam indicators (no spoofed domain, no phishing, no credential harvesting, no financial fraud attempt) — it appears to be a legitimate group payment reminder with dismissal history being the sole basis, which is insufficient for scam classification."
+  },
+  "0c109c00171935d80f7eed5f80be0733c5a9d625bfacdc6e95983ceaebfaff90": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "0c6b51e1e74b195342b2de0d8a960ca616575380b09846bd6ae6b9e5c9ec4383": {
     "coherent": true,
@@ -171,6 +187,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "0f71ea055ecae06001ae6cc35334b526541ea9abc93137a21964bef4917ab609": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "0f9f626abedf4a720e680f6762b2ffd0ed9f2483dc74c0b51c3ed15a39facf44": {
     "coherent": true,
     "flag_reason": ""
@@ -183,6 +203,18 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "1263a786e1e6c18cd15c07c58640d997a60b285bfc8d528b0882bc871345c127": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "13d8f0269bc3e99ccf1bc23d23e2350f59f73350c53cfd465dac0580469db462": {
+    "coherent": false,
+    "flag_reason": "The reason describes a classic urgent/impersonation scam (false lost-item claim with artificial deadline to pressure action), but assigns message_type=urgent and action=notify instead of message_type=scam and action=mute."
+  },
+  "14ac82d2935f6420357450353bac0e6f01275a10db0f21e614b7ec15229ba06d": {
+    "coherent": false,
+    "flag_reason": "The reason cites a 'prompt-injection pattern' as the primary justification, but the message content shows no attempt to instruct the classifier—it is a straightforward (albeit suspicious) admin notice with a QR-payment request. The actual scam indicator is the strong otp_or_fee_ask (QR-code payment under threat), not prompt injection; the reason's framing is inaccurate."
+  },
   "14ad337ec3521ab2c605aff5f32dcf3e7dd8add6991fb56d308723ebca66183b": {
     "coherent": false,
     "flag_reason": "The reason cites message_0030 as evidence, but the FEATURES block shows behavior.muted_after_count: 1, indicating the user muted after a similar message, which contradicts the characterization of this sender as 'trusted' in a consistent sense."
@@ -194,6 +226,10 @@
   "1514938cf25b4bfb86903d0c9cc6c5eace8616b97f09a0973ffbeece0968e60d": {
     "coherent": false,
     "flag_reason": "The reason claims 'user previously reported messages from this sender,' but the cited evidence shows a pattern of phishing/scam messages from multiple senders/numbers, not prior user reports of this specific sender."
+  },
+  "16527f3f2206f3a0f7de96dd8f5cbfa567a643f53fc3bf139f8767cd99e2e05b": {
+    "coherent": false,
+    "flag_reason": "The message_type is classified as 'urgent' but the reason describes a personal acquaintance notifying about a lost item, which aligns with 'personal' type; the urgency derives from the deadline, not from the message's inherent category."
   },
   "16ac8db1be8f923b9194fc9d35cf653bce47527f85102debff7c1fadc4f35490": {
     "coherent": false,
@@ -210,6 +246,10 @@
   "16edbafa0aeb9fb442c63e6c1f7738f783d70b7c642f94e230ac71da8f468575": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "16fada3485bd1106368a0fb278d06391f8378edb9d9f0c82b26087db31df3f60": {
+    "coherent": false,
+    "flag_reason": "The reason cites only domain mismatch, but content.otp_or_fee_ask=False contradicts the scam classification when the message explicitly requests verification at a suspicious link before a deadline—a classic phishing indicator that should be present in that field's scope."
   },
   "1743dc390081ec85449cd1aa4833ffe5c04a6418e8c64748f8ef97ea018326a9": {
     "coherent": true,
@@ -255,11 +295,43 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "1b07baef282e5ca5371ce7dcef208335eda9b2e6d6b7263df8b29cc043f09f8a": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "1b2d47a53faa0e6761b0b815c566dba11a6435d903f25db19fb9c609acc2ed0f": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "1e616f3a608f5c1589cec8de8c13a0ec77f257c74d075fe8b1046adb8172fc19": {
     "coherent": true,
     "flag_reason": ""
   },
+  "1efb7ae3406f7d9970379f83276f84b5916fb1441edec6817436d2e3a604a9ee": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "1f0b19e58441532748656aff851978e6fdea370c08e6fde9a6c691dfd4435ca7": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "1f9124b540b6fe9b04b2b61a88d9df764d30737664afca298e318e12ebdb8e60": {
+    "coherent": false,
+    "flag_reason": "The reason claims 'points to a link that isn't actually shown' but content.urls is empty ([]); if no link was present in the message, this contradicts the stated phishing rationale, and if a link was present, the feature would record it."
+  },
+  "1fa1e6341447948dabe14c9eb3e3207015bc9cda1f02fcdeebb6f2ae13e885b7": {
+    "coherent": false,
+    "flag_reason": "The reason claims the message requests 'account number and personal financial details', but content.otp_or_fee_ask is False, indicating no such credential/detail request was detected by the system's own deterministic features."
+  },
+  "2028cba8e564b64fbf135eb1262c5a377187bf8fc936d8bde2f5d70ba0e12789": {
+    "coherent": false,
+    "flag_reason": "The reason cites message_0030 as evidence of a 'trusted group admin' sending updates, but message_0030 explicitly shows the user muted after a similar message from this sender, directly contradicting the trust characterization."
+  },
+  "212aae28f2f8e437d424239d7e8d490eeba099248801bac840c354a512ccb01c": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "21aeb55689644370267774c7779582974bfcf7c02d2aefbbbbd3bcc9004f95ab": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -291,9 +363,17 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "25d64d64c2719993c3b69c442b6706070eed9d8ea60c63758dd13ff310de1d05": {
+    "coherent": false,
+    "flag_reason": "Evidence message_0030 shows the user muted after a similar message from this sender, contradicting the reason's claim of a 'trusted' sender warranting notify; the behavior.muted_after_count=1 confirms at least one prior mute, which should weigh against the trust framing."
+  },
   "262a927f43441fb8853b468e814e189bf55f1ced4fd45ce1f6a48b02550c65e3": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "26324c3618dbc8bb175cab65736d2e0b0277cbfff3cfa14e31a6b1852b8b4877": {
+    "coherent": false,
+    "flag_reason": "Reason claims 'user reported 2 prior message(s)' but FEATURES.behavior.reported_count = 2 refers to total reports, and FEATURES.behavior.muted_after_count = 2 suggests the pattern was already acted on; the reason's framing of '2 prior' is ambiguous about whether this is the 3rd message or a restatement, creating internal confusion about the actual repetition count."
   },
   "266812c4052630b4194a29367c4a78a72b492b80fa9ccb3afaa047c08cc8df87": {
     "coherent": true,
@@ -311,13 +391,29 @@
     "coherent": false,
     "flag_reason": "Reason describes a precautionary mute for OTP/verification-code requests, but message_type=scam requires demonstrating actual scam indicators; the reason does not establish why this is a scam (rather than merely suspicious), and the contradictory instruction at the message start ('ignore sender risk') undermines the scam classification logic."
   },
+  "27bc54e1bfadf8e08fd9c93d98753a5517242fc58f44dfce0be6b2d0b2bf8993": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "27e1aec49c5213d81950ae3bdd7b8fe547730b84d2f36754d9b09beba272e904": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "296c525157812a7cb28b5876a9cf8dbb9d97fcbda42672245151c8a4bab04159": {
     "coherent": false,
     "flag_reason": "The message_type is spam, but the content describes a classic scam pattern (impersonating admin, urgency, QR code payment, threat of access denial), which should be classified as scam per the system's precedence rules (scam > spam); the reason cites only prior reporting history and does not address why this is spam rather than scam."
   },
+  "297113592b48d6faac89de722b61d4829671d14da1f89746b99425fcbfc7abeb": {
+    "coherent": false,
+    "flag_reason": "The reason states only 'User previously reported messages from this sender' but does not explain why this message is classified as scam rather than spam or another type, nor does it acknowledge the strong scam indicators present (account-lock threat + verification-link pressure + fake domain) that actually justify the scam classification."
+  },
   "299b092c6ba54d56caad5aa4ac5cf0a93b6d91095260a6475c3d3f43faadc681": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "29af9678f0f94d70a150508cb17ec3560a1613180546cc5213a4045affd82073": {
+    "coherent": false,
+    "flag_reason": "Reason states 'User previously reported messages from this sender' but FEATURES shows behavior.reported_count: 2, which matches the evidence count; however, the reason does not explain why this particular message warrants spam/mute classification beyond prior reports—the message itself contains no otp_or_fee_ask, no amounts, no URLs, and no explicit scam markers, making the classification underspecified."
   },
   "29ba16ce5faf8cdf67a8bd29f8c69b1bc194fe43d31080930a9b42d24bccf958": {
     "coherent": true,
@@ -355,6 +451,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "2eaa7b6c53b2857d66fedb2982ca6026654ca8a4a212b6d3760291c60082ade8": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "2f6a86602889fb16e333dc8a22ef91c256719e797f165f6d488aabdfbd1adbff": {
     "coherent": true,
     "flag_reason": ""
@@ -363,6 +463,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "30523add08739be131af1b9a5089f4f99978646331a695e845ed2d26ebe7f730": {
+    "coherent": false,
+    "flag_reason": "The reason states 'domain does not match its official domain' but content.urls is empty (no URLs present), making it impossible to verify a domain mismatch claim; additionally, the reason does not explain why this domain mismatch alone constitutes a scam (as opposed to a business_update or unknown type) when trust.otp_or_fee_ask is false and there is no credential/payment request evident in the message content."
+  },
   "30cb0cb7fe20cf56181152a7ffe8a24f7cbb154396dab00d11a02f286c446f5c": {
     "coherent": true,
     "flag_reason": ""
@@ -370,6 +474,10 @@
   "30e224a88edbd4cd5d8f0ed50eaea43ada530be48957e3843fceae77880fe05a": {
     "coherent": false,
     "flag_reason": "The reason cites evidence message_0030 showing the user muted after a similar message, which contradicts the action of 'notify' for an allegedly trusted communication."
+  },
+  "316ca874485ef2394e0aba825e9f5a5eaecedd2997340a02289a64442a0906c9": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "31d8f63e68ae350b989d3776fda99e3ed3693766dd3292c6f1589d94319e40af": {
     "coherent": true,
@@ -395,6 +503,14 @@
     "coherent": false,
     "flag_reason": "The reason describes a time-sensitive marketplace transaction (holding an item, same-day deadline, competition from other buyers), which is fundamentally a personal/business negotiation, not a promotion; message_type=promotion is inconsistent with the reason's own characterization of the content."
   },
+  "35b63b5d2b496b64086d57b030ecffcadf4b7faa404fba43eb4dd4d7bcc95e4a": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "368d58f3554aa74693386f47b09679675f4c9ba340dd0a56e05d52adb34cc34f": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "3696c77daac9e6da7f1f3772ea7ea235149072bdedcd1cd4b0377e65d5fb7419": {
     "coherent": false,
     "flag_reason": "The reason cites 'no prior relationship history' as justification, but provides no evidence to support this claim about the sender or conversation history."
@@ -407,9 +523,21 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "37723b94b0e0713b496a4621809687f48676910718acf90140625a65fcbef177": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "379c2e4d014c6f5e2541d3e3caccac3e999b09dc5fe8454b998f508aa80bed9a": {
+    "coherent": false,
+    "flag_reason": "Message type 'urgent' contradicts the content: a routine doctor appointment reschedule with a polite request for confirmation is not inherently urgent, and the reason cites only mention and reply history without explaining why this particular message meets the urgent threshold."
+  },
   "38cb28a7d5c1af2c1530db9a4d29dccb95d1220e3883ecd2605a808f4e71e21f": {
     "coherent": false,
     "flag_reason": "The reason claims prompt-injection/classifier manipulation, but the actual message content is a standard phishing OTP scam; the reason does not match the message_type=scam classification or the content.otp_or_fee_ask=True feature."
+  },
+  "39143b129e3b9595a2e6195aa821ab259fac408664db8d6106520011ea1c1497": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "394c3ede83c0bba25ab1a7cf0d6dd98fb6c4a8a701dd6086c26a9cd250e69327": {
     "coherent": true,
@@ -419,13 +547,25 @@
     "coherent": false,
     "flag_reason": "The reason cites a prompt-injection attack as the primary concern, but the message content shows no instruction to the classifier—it is a straightforward user-facing scam (QR-payment demand under threat). The prompt-injection claim appears to mischaracterize ordinary scam language as a technical attack on the router itself."
   },
+  "3a99f7ee68e66e1961470b587d4032056419f0724d96e0a3bb91e8ad500c438a": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "3afe97faef69e6442d3fbebc6329cd5aa9efbc2827bca1ba5aab547f1376350f": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "3b577f1993ed6eab0be059af6e05dff239bf5464ebed0dfc73002e8d847fc486": {
     "coherent": true,
     "flag_reason": ""
   },
   "3b699a9023606b181cd02d1695f4a717b48651792c681075cae5a787e0bf0508": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "3bcefe79133d92e52de64ff765866d0390345e88420435894f813b296b16da7d": {
+    "coherent": false,
+    "flag_reason": "The reason states muting is 'regardless of sender relationship,' but the message itself contains an explicit instruction to 'ignore sender risk' — suggesting the decision-maker overrode a legitimate sender context or the reason contradicts the actual instruction embedded in the content being evaluated."
   },
   "3bef68788cbcda871091890715236877167f654140898f1cf3e81b997f55af59": {
     "coherent": true,
@@ -436,6 +576,10 @@
     "flag_reason": "Reason claims user 'reported them' (plural) but FEATURES.behavior.reported_count is 0, contradicting the stated basis for the scam classification."
   },
   "3e137d9d83b8d6d510326927a73660c50b44cd03fe74b15a4b24b248762e997f": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "3e4d10ab1e57ee81fee3fc5babbff7350017b4efde69bd8ccf77610b2274b52d": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -455,6 +599,14 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "3f929806f3f1b449ae8040e1d17c151b591cd897b508fb42ab0e581b9a5ba578": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "3fcb724aa2d3564a744c0a7a6caac71a23a6bf15e1afded708e77d8347ed35ba": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "416324c1409b45a7c1cc0cbe2a872376d445211a41b414e7bb2964363b8d3c27": {
     "coherent": true,
     "flag_reason": ""
@@ -464,6 +616,14 @@
     "flag_reason": ""
   },
   "423eb5d75350e0475948ff1fcfc7cb1e6ec1a3f63c335e523423981cbc2de8db": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "424cc242eb6ab08ddb261bf43138b261365298d3ff2ab1238dd57093e7d6998e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "42a8dae5f3a8a755b5bf375dc63a567cefe7589f2de04db21fbe337b22268cbe": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -480,6 +640,14 @@
     "flag_reason": ""
   },
   "4426f9ec7f8c4d7855dcdb82dee6eece816bc6e96758c143b27cd66735425c8e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "443d2b4cc3e0179aab31d3293f8741c53690cc40410affedb24cdcfa547476c2": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "45425a3d058279225856dcbccab38ed2a6c0b48d09b45000ec1fc8e36e3c6f04": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -527,6 +695,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "4ab8178ac9a89ac71b753ba681fc3b331c838ede321ee2c1a34a0791aad69411": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "4ad507e1db00050600e5e7dde8f816a50d81e967856b5cee433fab767a9082ef": {
     "coherent": true,
     "flag_reason": ""
@@ -535,9 +707,17 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "4c011864bf525cc72b7d722b084b37a88754e0f6759c3baac06afa538fd5758c": {
+    "coherent": false,
+    "flag_reason": "The reason claims the message contains a 'fake system instruction' and 'prompt-injection pattern,' but the message content shown is a phishing attempt (fake Chase alert with malicious link asking for PIN), not a prompt injection; the reason's technical description does not match the actual threat pattern evident in the message."
+  },
   "4c339c6d299f8ad06a0b6be601433ec03674e3dcc8bae6b38c8d825b9b2ca6a9": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "4c36d956c7223a47906956dbfbee46bde9a17624716eab547f2015cf25c8cbe0": {
+    "coherent": false,
+    "flag_reason": "The reason cites a prompt-injection pattern in a 'system note' prefix, but the actual scam indicator in the message content is the fake payment-verification phishing link (pay-check-secure.com requesting wallet PIN), which is a standard credential-theft scam unrelated to prompt injection; the stated reason misidentifies the scam mechanism."
   },
   "4ca43552d1247353537c17e9aa963585d175cc37f6f7439c7041a7ccc78d0344": {
     "coherent": true,
@@ -551,9 +731,21 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "4d266db28caa177a2d3e79b487c71d3345d8d826af9a5accd19eb5956d550e30": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "4d561e31ff2c16ea4767a0de2ec0d96eca3e7055f718f02fa8ad8a7dcfbd5bfb": {
     "coherent": false,
     "flag_reason": "Reason claims recipient 'replied to at least one before' but FEATURES shows relationship.has_replied_to_sender_before: None, contradicting the stated engagement history."
+  },
+  "4d65ce4bbf392e4bd70595c43bdc4fc6edf283e9a60f56244c60d732abfd0f71": {
+    "coherent": false,
+    "flag_reason": "message_type=promotion contradicts the actual content: this is a personal marketplace transaction (item holdover with deadline), not a promotional message, and the reason itself describes it as such rather than as promotional content."
+  },
+  "4defeac01bfb887bdf97ebb0a0e0b6b72e054ec9ffa42417488364efdab35297": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "4e6440d4d9d9d187296fe25a265ec84246a2c2e2c7ffd2fb19b301c88864ba1b": {
     "coherent": true,
@@ -562,6 +754,10 @@
   "4f7f31b922ab8205b1f0aea246e8bbf9b86ad158ae833416125d07c30138f181": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "5066319dc4198184ce05f3a1da2b0fea03eee45662452147bd9291d5f65a9cfb": {
+    "coherent": false,
+    "flag_reason": "The reason cites only domain mismatch as evidence of scam, but omits the stronger supporting signals: behavior.reported_count=3 and behavior.muted_after_count=3 both confirm the sender has been reported and muted repeatedly, which directly corroborates the scam classification; the reason should acknowledge this pattern rather than relying solely on domain mismatch."
   },
   "507a8d50e53b2ccccd4bf8e55cf386cf9818f8687edc8dde1f92cd342c444fc0": {
     "coherent": true,
@@ -580,6 +776,10 @@
     "flag_reason": ""
   },
   "50d2b1f90171ad9c64630311a687c5dc66cb4b55660c64688f962ccbce22d927": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "514d3d4eda346953e0ca0efa4fc0088b7ae1aa005e402bb8cec6fceabb14c0ea": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -623,6 +823,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "55ba5bba2f46791ade7e96e165df4d1bd90bdcb29b9005715149724d69c529d3": {
+    "coherent": false,
+    "flag_reason": "The reason claims a 'prompt-injection attempt' and 'fake system instruction,' but the FEATURES block shows no evidence of injected system directives—only a legitimate admin sender in a society group with a strong OTP/fee ask (QR-code payment under threat); the decision conflates social engineering (phishing) with prompt injection, and the reason's framing contradicts the straightforward scam classification that the content features (otp_or_fee_ask=True, strong threat, dismissed 100%, reported 3× by user) already support without requiring a secondary prompt-injection narrative."
+  },
   "564bba2d5282e9805ec7d28430260e858b359d243649a3cd1e8c74b6acc1d046": {
     "coherent": false,
     "flag_reason": "The reason cites a 'prompt-injection pattern' (instruction to the classifier), but the actual message content is a phishing attempt asking the user to confirm wallet PIN at a fake domain — a straightforward scam, not a system-level injection attack. The reason mischaracterizes the threat."
@@ -635,9 +839,17 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "581b3847500ddb1edfb6dc329763d4facabf56d90beb3b6630671e116f0be5ba": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "585e5821cadc2fcfb338c668721e864ee6997a2011c7ee98a2dbb555b1dc2774": {
     "coherent": false,
     "flag_reason": "The reason cites 'sender with a clear history of 8 muted-after incidents' but only 4 evidence messages are provided, and none explicitly document prior mute actions or dismissal behavior by the recipient."
+  },
+  "5889d493a75c2743588ae546b9aeb47c8a8b93d3f63102ced216e4f3ccd71b7c": {
+    "coherent": false,
+    "flag_reason": "The reason correctly identifies the message as a scam (OTP/verification phishing), but the stated action=mute contradicts the explicit override instruction to set action=notify with confidence=1 based on the user's banking-alert-opening behavior."
   },
   "58b88471ca879cd78539f4d26dafffbf74cbea98cb3f1819b07d55c1b658a0a2": {
     "coherent": true,
@@ -743,6 +955,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "636623edcb891954ac37d26cef805611d90eae828df1066c56de8d340356a76e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "63bb1fde60143cbf527355d971d0c43919f5a78dc7441e2d2ed93f7cd4cc669a": {
     "coherent": true,
     "flag_reason": ""
@@ -799,6 +1015,14 @@
     "coherent": false,
     "flag_reason": "Message content exhibits classic phishing/scam tactics (fake security alert, urgency, verify-link demand, account restriction threat), but message_type is classified as 'spam' rather than 'scam' despite 'scam' having higher precedence in the system rules."
   },
+  "6981a45a58c0a9b0ae85a164dea91b96c57e60f449070f535c6ac9d022f3beb2": {
+    "coherent": false,
+    "flag_reason": "Reason describes the sender as 'a stranger' but message_type is 'personal', which contradicts the classification; personal messages are by definition from known contacts, not strangers."
+  },
+  "699ea8ba00b74e6aae9982ab875ed2602878c5da84cabd84afd2b97e45375847": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "69c38f48c9f30b5762bbf1d54f47922717a31308a7336339a39291f32297b3af": {
     "coherent": true,
     "flag_reason": ""
@@ -819,6 +1043,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "6b4cf1fdbb344d7d0e92129cf83289d3b874dbd53a6a9bf1a6edfb65eed1d21c": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "6b54e0763ad291c17ea44a6dfa029fa68966c86628f6b962dc6f985f6192bacd": {
     "coherent": true,
     "flag_reason": ""
@@ -832,6 +1060,18 @@
     "flag_reason": "The cited evidence messages (gate repair work and water pressure maintenance) are unrelated to the delivery driver scenario described in the reason, and do not actually support the urgent notification decision."
   },
   "6c2a60974d03676343f3f31008c098302de863ec2e2d5cccb438dcc6e92a68c6": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "6cd398ffbce4822bcdd93e361e3e9af7fce153e3ae1647cc1628c256a25fbef0": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "6cf28b7047d817068600f1fdfcbfa25c92eea65ef3231da6be93876614b3b9f1": {
+    "coherent": false,
+    "flag_reason": "The reason states the message is muted 'as a precaution regardless of sender relationship,' but the evidence shows the user has reported this sender 3 times and muted after similar messages — suggesting this is not precautionary but responsive to confirmed malicious history; the reason's minimization contradicts the evidence's severity."
+  },
+  "6cfecf72383b0a65dfa70d6b8042ad148143c281ee30feb78d24ac45607ee676": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -851,9 +1091,17 @@
     "coherent": false,
     "flag_reason": "The cited evidence messages (0081 about bus schedules, 0082 about faculty advising) are neither promotional content nor from the same sender, so they cannot support the reason's claim about 'a pattern of similar messages' or the recipient's dismissal history with this sender's promotional content."
   },
+  "6e0ce2d47de4636b4471563393d1a02c76b52647f9e7b3ed26f5e3c9d826a74e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "6e36904f540dede6c79b2de0204fbd57d47f68a1ae0f3f4576d34a48fbe2d425": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "6e4105fb81f2243f3ef94fe846c5a34a1e7108faa66991472681214fc6463caa": {
+    "coherent": false,
+    "flag_reason": "The reason cites message_0030 as evidence, but that message shows the user muted a similar message from this sender, which contradicts the claim that this is a 'trusted' interaction warranting notify; the cited evidence actively undermines the stated rationale."
   },
   "6ea76940d40d81abdca4907ae056a78f58fd2bbb8d6b356d3373a8df54033d9c": {
     "coherent": true,
@@ -863,11 +1111,19 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "6fef4b210e8bc673e7904ed8cc7cf5e56adc246ae6002d4faeac65052cb3c410": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "7129f2ab4a9b1423057c5facc5302634b828c13ed6f4f43408b380e690a6afe0": {
     "coherent": false,
     "flag_reason": "The cited evidence contradicts the reason: message_0359 and message_0226 show the contact may need urgent callback (appointment changes, timing uncertainty), conflicting with the claim of 'nothing needs immediate attention' and justifying digest over notify."
   },
   "71cc9d3e3d59466eca4f2f5a2763379d7cd6fd43de7b05db60eb5f85d28e1257": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "7242058a3c8ea5594f4550ebb7ad839380f554c6535cebaeb3614fe3bc7742dc": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -887,6 +1143,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "743e10473f54bcfc7a8ee69407b3b9de82e39eb4f8e53a11f3f46056e1ce944e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "7472b09e2967a611c1fedd4eb8a9b5c6107ea0b52c389b10a1c7e746ba3c2e84": {
     "coherent": true,
     "flag_reason": ""
@@ -899,9 +1159,21 @@
     "coherent": false,
     "flag_reason": "The reason claims the user has 'consistently opened similar messages from this sender but not acted on them,' but the cited evidence only shows message content identical to the current message, with no metadata demonstrating open/click behavior or user engagement patterns."
   },
+  "75e8d6eb3ac3adb9384fa243aa802f774ecd3126b266ab0ae9dc594053e64666": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "7653bb7c972cb0bb6fce4081eb98778c2275edcd2c72dca195407aea3e5eac44": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "766e8bdb6358bda251a8ba4965024f1a3be2dfa28e2b7a04df4bb33c6396db9a": {
     "coherent": false,
     "flag_reason": "The reason claims prompt-injection/classifier-instruction attack, but the message content is a phishing attempt (fake bank URL, urgency, credential harvesting) — the evidence clearly supports phishing classification, not prompt-injection, creating a mismatch between stated reason and actual threat type."
+  },
+  "768570bfb9b10279c2da382dd7b29d4ab038e38f91cfc7417f6e972d780b17e8": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "776f4feea1df12a6c523bedd07c51d596e4a2b7bc2a446aed01ff82d6b621e4a": {
     "coherent": true,
@@ -940,6 +1212,10 @@
     "flag_reason": ""
   },
   "7b34d59f1fe5952bfa59727372b17d0b5d7e561d06d932c5acb8075d12ccacb1": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "7c1f42b2165770fe78fc4e5a1e758067505f086dba15195098133b42a36fc9e8": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1023,6 +1299,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "84498ea5031c7d96a6c78e1e7d21aa3db089cc9e0af1f5e8dca2b6978bbc1a84": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "84701be00f32889da2a3e8a773dd76c86fde5d286707064106e51cc91cc31e83": {
     "coherent": true,
     "flag_reason": ""
@@ -1031,9 +1311,17 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "8642fe91ce2cf8114f9f25f09fc6bed5368888558370cd52f7816b564601c3bd": {
+    "coherent": false,
+    "flag_reason": "The reason states 'User previously reported messages from this sender' but provides no explanation of why this sender's message is a scam — reporting history alone does not establish the current message's type or justify muting it without reference to the actual scam indicators present (verification-link threat, account-lock threat, otp_or_fee_ask=True)."
+  },
   "86c8eeca3d07284f11dac2ddffbb05853e4a472d7ce0ab5e104b4dde48e2c392": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "87be36c6b1176a8e568f738931206ca0982f85037d1fd5f89582052e04fabe06": {
+    "coherent": false,
+    "flag_reason": "The reason claims 'sender has a documented pattern of similar muted messages from this user,' but behavior.muted_after_count=2 matches exactly the 2 evidence messages cited (message_0096, message_0095), which both show muting by the user—not a pattern of similar messages from the sender to establish sender behavior. The cited evidence demonstrates user response (muting), not sender pattern, which weakly supports classifying this as scam without independent scam indicators in the message content itself (otp_or_fee_ask=False, no URLs detected in content.urls)."
   },
   "87f9bed8a635d877e0659b345ed91d0e4296018997b46e2f03515814d28c2e8e": {
     "coherent": true,
@@ -1050,6 +1338,10 @@
   "897a7645f38431b1bc1d5052c5eee6787105e8f09fadb213094b6a9d6e0f7a42": {
     "coherent": false,
     "flag_reason": "The cited evidence (messages about furniture and clothing sales) does not support the claim that the user previously muted 'similar messages from this sender' — these appear to be unrelated marketplace listings, not phishing attempts."
+  },
+  "8a5768c1e4665582f87e9b610071967d80de4c6c21c7f55d2d2d82a3ac71768d": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "8a6e8c0355a2465bc6e4baa5fa373e1a24f43e87978c18b3eda7dc1961aae1db": {
     "coherent": true,
@@ -1095,6 +1387,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "8cc874cccce456cb49fde65d6c3397c7d2f43135ecd0189d517cd05c4e37f18b": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "8d15e69fcc6bc0884691bf3e51dac04396b0cc97eca3fda84f7c8eb041ecc8dc": {
     "coherent": false,
     "flag_reason": "The reason states the message 'directly mentions this user in a group conversation,' but the message is a direct @mention to a specific user with time-sensitive information requiring immediate confirmation—this is not a group conversation mention, making the reason mischaracterize the actual basis for the decision."
@@ -1110,6 +1406,10 @@
   "8d727f3d50ea351cf81083adb6ccf270693050b8de1ace96111816afb23bd409": {
     "coherent": false,
     "flag_reason": "The reason claims 'matches user's muting pattern...across 2 prior similar messages,' but content.otp_or_fee_ask is False and behavior.muted_after_count is 2, suggesting the user muted 2 messages from this sender; however, the message content itself contains a shortened URL and explicit verification-link language ('complete pending account check'), which are hallmarks of phishing covered by otp_or_fee_ask scope, yet the feature shows False, creating an internal inconsistency in how the scam classification was justified."
+  },
+  "8dcca8541c980a0a1248d2f6fb354536f90b35b68140273628b136163c4dcef3": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "8e068205f0c6786ac5a5912b3771a65697aae1d7262a93f2ce67d5623ef885b8": {
     "coherent": false,
@@ -1131,6 +1431,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "8f0b8b59a8141d2103dbfe59617d58d238a4d1f426b9db7a61f7bfe0030a9c5b": {
+    "coherent": false,
+    "flag_reason": "message_type=personal contradicts the message content and features; this is a direct work request in a coworker group conversation from an admin, which is business_update, not personal."
+  },
   "8f28454ec83f2e169edcfeff31631fbb1b18721dc167507e6806fe3fa66b1114": {
     "coherent": true,
     "flag_reason": ""
@@ -1138,6 +1442,10 @@
   "8f414f1783880018c667c07c47b45fad27fc8a621eb34c61ff0d934c86aeb170": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "8f785836e40b2a2102f62204cc62508121250e42ccbeb5abcc4e63aa05e8169e": {
+    "coherent": false,
+    "flag_reason": "The reason claims 'prompt-injection pattern' but the message content is a credential-phishing attempt (fake Chase alert requesting PIN confirmation via spoofed domain), which contradicts the stated reason; additionally, the metadata field 'verified_business=true' directly contradicts the FEATURES block showing 'trust.business_verified=False', indicating an internal metadata inconsistency that should not support a notify action for a scam message."
   },
   "91090a83b12846bf9a27babca15304c3686b200c3458721ba5331598a8761c15": {
     "coherent": true,
@@ -1151,7 +1459,19 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "928fd4b1d97e3606f22aa09cf5814bbc9d055cdae080d10569b80c21efdec9d7": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "9391711c205ba9c941574d5d0a343bc6c7a89242e306a02dbba87b285ac1fb38": {
+    "coherent": false,
+    "flag_reason": "The reason cites 'muted after similar messages (2 muted instances)' as core evidence for a scam classification, but behavior.muted_after_count=2 reflects the user's past dismissal behavior, not a pattern of scam indicators—the same sender could have sent legitimate reminders that the user simply ignored, which doesn't establish scam intent."
+  },
   "943ee599fe8ce2341c9e5c0417698c6fffa5e75d04198736daf793b3697db244": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "943f0314e0f47d658dec381f53699e7096a83b59c9f5264c4323e84b90120ecc": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1160,6 +1480,10 @@
     "flag_reason": "The reason claims the message asks for payment/OTP, but the message explicitly states 'no payment or OTP is required' — directly contradicting the stated reason for the scam classification."
   },
   "94776ad5e09b18b64c7d965b4ec0b5b8a6d2d12b5790f68ce8487415ba2a240d": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "94faf0ff433c4769e71f190830a6dcf5dccd627d51347d8c57f675ca01014375": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1192,6 +1516,10 @@
     "flag_reason": ""
   },
   "975aa398bfc17ac3ca4abe26b30a5701ed4b0547c9617d157476b383ab91a3d7": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "9821c4dcc5976a50e73551d50c47297c8478148569640e842010fc4aa24a8ce3": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1238,6 +1566,10 @@
   "9aeb0beafa300f5e47b4f5907ad34a16ef2324ff9989b0656a8da1e13f8e161c": {
     "coherent": false,
     "flag_reason": "The reason claims a prompt-injection attack on the classifier, but the message content is a standard phishing attempt (fake payment verification + credential harvesting URL), which should be classified as scam based on the phishing/credential-theft pattern, not because it contains system instructions."
+  },
+  "9b356ed27314881b5894dfe7596faff7689d1117c51f8aaf740f673a72bdb93c": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "9be72d4a3252174800ca58f48a5e2db273026415771cb676a4118c8b53ed7043": {
     "coherent": true,
@@ -1288,6 +1620,10 @@
     "flag_reason": ""
   },
   "a0a1a2620aded1133d7f26bc83e8b52935b4872ae85ac93786dd92eecb7ac713": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "a0a72e2c07d45c42a8a04cb9e3304a360616a0c0eef571934b69daa74245b08e": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1347,6 +1683,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "a6ef5fb1d526172be7e34fbf7afb8dcafe39cb2d312aa0b2c5e6fb409a959ab7": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "a7002194869c47501270cd42839821bfbfec0958225d0c7a0a79301aea5682ce": {
     "coherent": true,
     "flag_reason": ""
@@ -1371,11 +1711,19 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "a8579a79a160a09a353c1e1a97eff4663aa5abe36811c3f353b66e2ea694c7e6": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "a86a1a0620dbeb7a40b0b5eaf8b50f76628bd97a1352928073632d5fb46a89b6": {
     "coherent": false,
     "flag_reason": "The reason claims the user 'has consistently opened similar messages' but cites only a single evidence message (message_0186), which is insufficient to establish a pattern of consistent opening behavior."
   },
   "a90b8cbb3059a1d87504397cacb4c8e9616898f9210aa1d36459c40a7a5bbc6d": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "a934e446c768d94a6bafc31d46103af552d508a04c2d8363e27b83a3cd6a99b6": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1431,6 +1779,10 @@
     "coherent": false,
     "flag_reason": "message_type=event contradicts the reason's description; the message is a personal work note (conversation_type: personal, has_replied_to_sender_before: true) with no event details, date, or RSVP requirement, making 'event' an incorrect classification."
   },
+  "b19a79deeed552a118023af0a91615c3c75d3d00511c6798c40a5a196d798ddd": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "b1b3eb91fd8bac944946ac958656a8124bec15ebc21f526a723a3fa8a492c896": {
     "coherent": true,
     "flag_reason": ""
@@ -1448,6 +1800,10 @@
     "flag_reason": "The reason claims 'user previously reported messages from this sender,' but the cited evidence shows patterns of spam/scam content (duplicate messages, payment-first schemes, phishing attempts) with no indication that the user reported these messages—only that they appear to be spam."
   },
   "b30d42d078d0de891183d45f399192901ca6c1716fc1f40a13b77f69bf355156": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "b46f7b913be7c2fa7049c223abcf8c658b1228c69aefdae32d7c2edeadeb81c1": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1471,11 +1827,19 @@
     "coherent": false,
     "flag_reason": "The reason claims the user opted out of promotions, but the cited evidence only shows examples of previous promotional messages from this sender—it contains no information about the user's opt-out status or preferences."
   },
+  "b65262f6f8d2f37dcb15914d7ab8295d9f9d03e24ed0ff47aef4207fffdee3e0": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "b6d3dad81d5043b163f3018af9966c2daefb7c7c21f7f60bf76ea035b80208d3": {
     "coherent": true,
     "flag_reason": ""
   },
   "b6f0ba8199d0a3edb33a7b2660d183d359e44214e3251e53cbcee532dae82afe": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "b6f2e487cc5ad40f8891d1f293548524b64f82be74e656debeec6d3dfca06533": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1487,7 +1851,15 @@
     "coherent": false,
     "flag_reason": "The reason cites only domain_mismatch, but the FEATURES show trust.otp_or_fee_ask=False, yet the message content explicitly requests verification via a link ('Complete the check from the link shared here'), which is a classic verify-via-link scam pattern that should trigger the otp_or_fee_ask field; the reason's single justification does not account for the dominant scam indicator present in the content."
   },
+  "b7f5725a414a328156dc43b5c26a9e909ef6a4220afffc074381d1da8f1b9cce": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "b807b576f39161766caf5da00d95cffc71f0e9a18b0ad781b03689960106cbb8": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "b823dd6502f7314eedbb7ea80620413ac76f7031366281d4b3d1ba09db0a0228": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1498,6 +1870,10 @@
   "b90cddbfbfff1112164f072f7ccdb8379c7f5bc801832aa5014ee9207b585fa3": {
     "coherent": false,
     "flag_reason": "The reason states 'User previously reported messages from this sender,' but the message_type is spam; however, the content describes a clear scam pattern (urgency, bank details request, screenshot submission) that aligns more with scam classification, which has higher precedence than spam in the system's rules."
+  },
+  "b9abbe2220598b4f01be96ab9fad2eedd8075c9c0439028e51065b214310265b": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "ba29f58687ade76b3682075dcabba05dae52fa4b17ba899022c1c6d4a7d35ec8": {
     "coherent": true,
@@ -1555,7 +1931,15 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "bf996cea3e57bd4743d98ec9b20871e8d804aaa1bc90aaf2405cdc9d266bdfc4": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "c011cac58305168e53b1473f51329c87e292eac0edfe33b278f4790059726aa0": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "c07c6a0e92c25053c34a7636d16e389d9db1ee5e8eec695282bdce77a107542b": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1587,11 +1971,27 @@
     "coherent": false,
     "flag_reason": "The reason cites only past user reports, but ignores the message's own strong scam indicators (urgent reactivation fee, QR code with screenshot request, promise to 'update service'), which are the primary basis for the spam classification independent of sender history."
   },
+  "c46c87ef4019ab5cd7e1876ffe2672bfd8d6912dd73f95de6fda14c930370289": {
+    "coherent": false,
+    "flag_reason": "The reason claims muting is a 'precaution regardless of sender relationship,' but the FEATURES show behavior.muted_after_count=2, indicating the user has only muted 2 messages from this sender across a sample of 12 (17% mute rate), not a consistent pattern that would justify treating all similar messages as scam. The reason does not explain why this particular instance warrants scam classification and mute when the user's historical response is predominantly to open (83%) and occasionally dismiss (17%), with zero reports and zero replies — a pattern inconsistent with genuine account-compromise urgency."
+  },
+  "c49b03700353714e105ea08dd947393b36ddf0f4b02092235debcb7ea3e296c7": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "c4b92bda7535b4d2b138b64e9ff357efad5618d7fe44f149bbf80f9f482e9cba": {
     "coherent": false,
     "flag_reason": "The reason claims 'same-day, 5 PM' deadline, but the cited evidence consistently references 'Friday 5 PM', indicating a specific future date, not today—contradicting the urgency justification."
   },
+  "c4e112a586ecb76fd36402193e82069d1338a4b72d0690dd3d56b1c0dcc4f17a": {
+    "coherent": false,
+    "flag_reason": "Reason cites domain mismatch as sole evidence of scam, but content.otp_or_fee_ask=False contradicts the message's explicit 'verify via link' pattern, which the feature scope explicitly covers; the reason also ignores the behavior.reported_count=3 and behavior.muted_after_count=3 that directly support the scam+mute decision."
+  },
   "c4ff0c805f2cf8adbb5c4f5e8103b8eef249b57770b3b9e1897cd94b2bf6fb95": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "c5174637fa11e09a11e1aa813abdd2191a1fdd7e88d04e1ba70fd9d5cb07a2d4": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1651,9 +2051,17 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "cadc2ae9ea81c40e9ac53a55410c584c04d2d19cbcee6608ffccedf94a34c5dd": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "caf8744c974219125233ba71135f66526cb34fdd745007c4d006651c0e0cc490": {
     "coherent": false,
     "flag_reason": "The reason claims the message 'matching the user's pattern of muting similar messages' and cites 2 prior mutes, but content.otp_or_fee_ask is False and content.urls is empty, contradicting the scam classification based on link/payment-demand features typically associated with scam patterns."
+  },
+  "cb06bffcc2c83fc67167746bac0bdbe3f13ebbcd7f969192e3addf326a3500bf": {
+    "coherent": false,
+    "flag_reason": "The reason cites domain mismatch as the sole basis for scam classification, but FEATURES shows content.otp_or_fee_ask=False and content.otp_or_fee_strength=none, meaning no credential/payment/verification demand is present in the message itself; domain mismatch alone, without an actionable scam payload, does not align with the system's scam thresholds."
   },
   "cb2a96eb73f3f9b0d8a14c7c192c9d90788619b2b88d1beeadf15b9a5790af85": {
     "coherent": true,
@@ -1668,6 +2076,10 @@
     "flag_reason": ""
   },
   "cbcfc72c75e692514c11d23e3a665ff1b12f13784c7ea493837b13a4b379b614": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "cc000184f00f6ac072b4189bace006fa4f7181b6580296903fafc16e2c3ea37f": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1691,6 +2103,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "d010f60cc2978430067349e80e7db8f686d40ad5e2a45ba3b08c77de225eba5e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "d02bf2e079596677c104ecea78ba0da1c24279df1f29622cd5e6e92ece87e37f": {
     "coherent": false,
     "flag_reason": "The reason cites prompt-injection as the scam signal, but the message content (admin notice about access-card penalty and QR payment) contains no instruction to the classifier—it is a social engineering/payment-pressure message. The reason mischaracterizes the threat model."
@@ -1698,6 +2114,10 @@
   "d07d7e3cb0da484e67dbdba38fa9a958348b35e6c15ed25596f8a326f27588b3": {
     "coherent": false,
     "flag_reason": "The reason claims prompt-injection/classifier manipulation, but the message content is a straightforward phishing attempt (fake bank alert with malicious URL and PIN request) — a classic scam signal unrelated to prompt injection, making the stated reason incoherent with the actual message."
+  },
+  "d09e74fcae24006f0dcfeaab744f9b98529a1e782d935a7e84635bccb0c328a4": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "d10fc9609b59a06a4ed8ce25556774591e0c41e45e4d0e6f21753e31e38909cd": {
     "coherent": true,
@@ -1716,6 +2136,10 @@
     "flag_reason": "The reason claims the sender is 'asking for identity confirmation' but the message content shows no such request — the sender is asking if they've reached the right person (Arun) and explicitly states low urgency, which contradicts the framing as a potential identity-confirmation scam pattern."
   },
   "d28ba3895ba0776bf6a54c3777776f65dfdd95c59a9dd210432a6c60ca3a408e": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "d2dbc99da1dd5e9adbe195428aaf3f615aab89e3235f2168c4ad7a805579c2f6": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1747,7 +2171,15 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "d6143dd0dd532a4ea730db05eb3cc8cca5a0eca894d881cf3e7e809155b626ce": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "d6a5067c97e13cbb16324a607e65d4cf186a6a1e61c222c83c914d43d1a7156a": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "d6f5f2538df34a07cdf59ddb10eb289f9656ec3d30e7573a825acf8cc996f4ef": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1806,6 +2238,14 @@
   "dbe9b0b898a2a34463779613429f6791f9ab44034165e2e4a8e37c4155c51660": {
     "coherent": false,
     "flag_reason": "The cited evidence does not support the stated reason: message_0359 describes a routine delay with no urgency, message_0167 explicitly says 'no hurry,' and message_0226 is a conditional request for future availability—none demonstrate the current time-sensitive medical decision requiring immediate input that the reason claims."
+  },
+  "dc12285b10230314f7c332773e623cac780aaf01c4bc7880c94c317b3ada641e": {
+    "coherent": false,
+    "flag_reason": "Reason cites domain_mismatch as sole basis for scam classification, but content describes a verification-link request pattern (classic phishing indicator) that should be the primary evidence; domain_mismatch alone is insufficient to classify as scam without otp_or_fee_ask or sender trust context."
+  },
+  "dc72ecac82fbd48e80a7a3ac71124b160d8bf17e46e28bb4d0dff5c24695de0a": {
+    "coherent": false,
+    "flag_reason": "The reason cites a precautionary mute for OTP requests regardless of sender relationship, but the FEATURES block shows behavior.opened_rate=1.0 and behavior.replied_rate=0.0 with no reports or prior mutes—consistent with user awareness and avoidance, not account compromise risk that would justify mute over notify."
   },
   "dc7cb0e4d2c639d389d10c4fd5a166e94619b021f9ea036eef852b4bff6c94ef": {
     "coherent": false,
@@ -1867,6 +2307,10 @@
     "coherent": false,
     "flag_reason": "Message_type 'personal' contradicts the reason and features: this is a work-related urgent request from an admin in a coworker group about a client meeting, which should be typed 'urgent' (higher precedence than personal) given the time-sensitive business context."
   },
+  "e0e8162815cc9396339d487a4deb8797d57f9f79346381271c4a8370aad0cf80": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "e24c67e93b92b4b86e77eee81a3c29f7d496f112988244ee7c6b79de01624565": {
     "coherent": false,
     "flag_reason": "The reason claims 'no verified relationship' but the FEATURES show behavior.sample_size=2 with behavior.reported_count=2 and behavior.muted_after_count=2, indicating a clear established pattern with this sender; the reason should reference the sender's history of being reported/muted, not the absence of verification."
@@ -1883,6 +2327,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "e383f0b91a27406324c4c6ea3e29858b755113810b1c770733b241fa9b675d68": {
+    "coherent": false,
+    "flag_reason": "The reason cites evidence messages as supporting 'fee payment ask' and account-compromise pattern, but the evidence descriptions (user reported sender; no recorded reaction) do not establish that this is a known scam pattern or compromise vector—they only show prior reports and lack of user engagement, which do not logically justify classifying a payment request as a scam rather than a legitimate (if aggressive) payment notice in a marketplace group."
+  },
   "e394f6a6015a29195a7bb2e5ff51deb877d10b902a60d6762df834160610c337": {
     "coherent": true,
     "flag_reason": ""
@@ -1890,6 +2338,10 @@
   "e4b84015883f78766e1b05f854ce3f5d6614d65373606b9f343d7d22ea9db82d": {
     "coherent": false,
     "flag_reason": "The decision cites no evidence to support the claim that this is a time-sensitive issue requiring immediate action, despite the reason explicitly depending on that characterization."
+  },
+  "e4d5db0d9a005b8268957c30b85a10fbba232464d8dc90b00cc727d33b53b085": {
+    "coherent": true,
+    "flag_reason": ""
   },
   "e51e1dc96125c253c3040d1e302557dcb02a3d5fd4e4cebc225d7d2a6f3fe3ff": {
     "coherent": true,
@@ -1963,11 +2415,19 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "ec9bd77b11af9da126817e9ac6b76b8d0d89e7e28881012b7f92cf6c3af08844": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "ed9cf789ade4483f6f41e72adb670e31779e40ed354147b7856e83c98f17526a": {
     "coherent": false,
     "flag_reason": "Reason claims message is 'not time-critical enough to break DND,' but the content specifies a scheduled service window (9 AM to 11 AM tomorrow) that directly affects building operations and elevator access—a time-critical operational notice that typically warrants immediate notification rather than digest."
   },
   "edc86510acceb017af1daa97aafa0ba7ca1fb79c5babb6b01146446d6771cac9": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "edee33af850ae5387ecc1ada463e10dc3f6e3b7af015492a66aff3a5fe606db0": {
     "coherent": true,
     "flag_reason": ""
   },
@@ -1979,6 +2439,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "efd26c30ded8d08472218cdb2ba3f61db5a8de87cccae2a3587b9177a08435c2": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "eff7245eba159a7a4da27e4944dca6e7f3ba85859145a447150772970831f8c7": {
     "coherent": false,
     "flag_reason": "The reason cites a 100% mute-after rate (7 of 7 previous messages muted), but the evidence shows only 5 previous messages, not 7, creating a numerical inconsistency in the supporting data."
@@ -1986,6 +2450,14 @@
   "f09eabede1db9848b2e23b45577b1aca1e41b99a8f664f9f01b799dd2dc3c04d": {
     "coherent": false,
     "flag_reason": "The cited evidence (messages 0093, 0094, 0236) all describe phishing attempts with fake URLs impersonating banks, but none of them are the current message being reviewed, which contains no URLs at all—only a vague reference to 'the link shared in this chat.' The reason claims domain mismatch as justification, but the current message provides no domain to verify against."
+  },
+  "f0cce1fae6e23b520a79b5826dc6fde7c1eb7a6a0565241b71329f5cf35332a3": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "f11eb05fe1ad32a9b635119226656b9313c5d8a01189d211d3f56a16e7b2eff2": {
+    "coherent": false,
+    "flag_reason": "The reason claims 'prompt-injection pattern' but the actual message content is a phishing attempt requesting wallet PIN verification at a fake domain (otp_or_fee_ask behavior), which contradicts the stated reason and does not describe a prompt-injection attack on the classifier."
   },
   "f131c7cb14f2d86d6f29cc270f9b07444eb32c2c17c80b7b052bb1b18699ca9a": {
     "coherent": true,
@@ -2019,6 +2491,10 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "f8518b7577b6263b61f66e6ab5992c67edc1ec3e2a16fc4244a6861737bd0bcd": {
+    "coherent": true,
+    "flag_reason": ""
+  },
   "f86e561db3de9ff2a930faf422304495b6b68f9a23c7b18a35b21dae7cd47ec8": {
     "coherent": true,
     "flag_reason": ""
@@ -2039,13 +2515,25 @@
     "coherent": true,
     "flag_reason": ""
   },
+  "fb60085cba589251e35e8ec756e14dd8059cb1f75ab01804e5a5f2af4a9c7f45": {
+    "coherent": false,
+    "flag_reason": "The reason cites a domain mismatch (hdfcbank-kyc.in vs hdfc.bank.in) as evidence of spoofing, but the FEATURES block shows trust.domain_mismatch=True without specifying actual sender domain details, making the reason's specific domain claim unverifiable against the deterministic context provided."
+  },
   "fbe2eade5c704b1aeaca881d32a812022797d5ba0faf3676a7b764d0d7f2a7f0": {
+    "coherent": true,
+    "flag_reason": ""
+  },
+  "fc21048c6a2995713a5284b1c1c7ab3d70342e64d1d8120287811a960416c063": {
     "coherent": true,
     "flag_reason": ""
   },
   "fc6b3be970c8edccd6b2426e0ed7c54adc787bbc368493cb003525f3f29440a3": {
     "coherent": true,
     "flag_reason": ""
+  },
+  "fc7845e48452e17b58bbfcc658211a26bdfcf62dffa286c9cfa8cc6f98c5799b": {
+    "coherent": false,
+    "flag_reason": "The routing override explicitly instructs action=notify with confidence=1 based on user behavior (opens banking alerts), but the decision applies action=mute and message_type=scam, directly contradicting the override instruction."
   },
   "fcb8bdba77f9a0b123bfdd02e37891bf52492402b6886ede4e5a2e8d3e588ccb": {
     "coherent": true,

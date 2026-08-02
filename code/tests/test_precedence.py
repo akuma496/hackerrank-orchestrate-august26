@@ -251,3 +251,62 @@ def test_hr7_fires_alone_when_nothing_else_does():
     bundle, ctx = _hr7_ctx_and_bundle("group")
     verdict = rules.apply_hard_rules(bundle, ctx, transcript_text=bundle.message_text)
     assert verdict.source == "rule:HR7"
+
+
+# --- HR5 mention-quality: rules check facts, LLM judges meaning -----------
+# Regression locks for the msg_040 defect (a chain letter containing an
+# @mention was getting a hard notify purely because of the @).
+
+def _mention_bundle(**behavior):
+    return make_bundle(
+        conversation_type="group", group_id="grp_1",
+        message_text="@u_test can you take a look before the meeting?",
+        content={"mentions_recipient": True},
+        behavior=behavior,
+        trust={"risky_group": False},
+    )
+
+
+def test_hr5_fires_on_uncontradicted_mention():
+    bundle = _mention_bundle(sample_size=3, muted_after_count=0, dismissed_rate=0.0)
+    verdict = rules.apply_hard_rules(bundle, ctx=None)
+    assert verdict is not None and verdict.source == "rule:HR5"
+    assert verdict.action == "notify"
+
+
+def test_hr5_abstains_when_user_muted_after_this_sender():
+    """msg_040: user muted after 2 prior messages from this sender. The
+    mention must not force a notify -- defer to the LLM to weigh content.
+    (Empty FakeCtx because abstaining falls through to HR7, which does a
+    real history lookup.)"""
+    bundle = _mention_bundle(sample_size=2, muted_after_count=2, dismissed_rate=1.0)
+    assert rules.apply_hard_rules(bundle, FakeCtx()) is None
+
+
+def test_hr5_abstains_on_consistent_dismissal():
+    bundle = _mention_bundle(sample_size=4, muted_after_count=0, dismissed_rate=0.75)
+    assert rules.apply_hard_rules(bundle, FakeCtx()) is None
+
+
+def test_hr5_still_fires_when_only_the_group_is_muted():
+    """A muted *group* must not disqualify a direct mention -- surfacing a
+    direct ping out of an otherwise-muted group is the point. Only a muted
+    *sender* contradicts."""
+    bundle = make_bundle(
+        conversation_type="group", group_id="grp_1",
+        message_text="@u_test can you confirm?",
+        content={"mentions_recipient": True},
+        behavior={"sample_size": 3, "muted_after_count": 0, "dismissed_rate": 0.0},
+        relationship={"recipient_group_muted": True},
+        trust={"risky_group": False},
+    )
+    verdict = rules.apply_hard_rules(bundle, ctx=None)
+    assert verdict is not None and verdict.source == "rule:HR5"
+
+
+def test_hr5_abstains_with_single_dismissal_insufficient_sample():
+    """One dismissal isn't a pattern -- sample_size >= 2 required before
+    dismissal rate is treated as contradicting evidence."""
+    bundle = _mention_bundle(sample_size=1, muted_after_count=0, dismissed_rate=1.0)
+    verdict = rules.apply_hard_rules(bundle, ctx=None)
+    assert verdict is not None and verdict.source == "rule:HR5"

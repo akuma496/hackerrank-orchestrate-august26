@@ -48,6 +48,10 @@ def _format_features_block(bundle) -> str:
         f"bank/card-detail requests, 'scan this QR and pay', 'verify via this link', "
         f"account-lock threats -- any request for a sensitive code/detail or action under "
         f"threat, not only the literal word OTP): {c['entities'].get('otp_or_fee_ask')}",
+        f"content.otp_or_fee_strength ('strong' = an explicit credential/payment ask; "
+        f"'weak' = pressure/urgency framing only, which legitimate security notices also use, "
+        f"so judge it against sender trust and history rather than treating it as proof of a "
+        f"scam): {c.get('otp_or_fee_strength')}",
     ]
     return "\n".join(lines)
 

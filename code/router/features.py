@@ -11,16 +11,29 @@ from . import config
 
 _URL_RE = re.compile(r"https?://\S+|www\.\S+|\b[a-z0-9.-]+\.(?:in|com|net|org|co)\b/\S*", re.I)
 _AMOUNT_RE = re.compile(r"(?:rs\.?|inr|₹)\s?\d[\d,]*(?:\.\d+)?", re.I)
-_OTP_FEE_RE = re.compile(
+# STRONG: an explicit request for a sensitive credential, detail, or
+# payment. Unambiguous across phrasings -- these carry hard-rule authority.
+_OTP_FEE_STRONG_RE = re.compile(
     r"\botp\b|\breattempt fee\b|\bconvenience fee\b|\bpay.{0,15}(fee|charge)\b|"
     r"\brelease.{0,10}package\b|\b\d{1,2}[\s-]?digit (code|otp|pin)\b|"
     r"\b(login|verification|security|access)\s+code\b|"
     r"\bbank (details?|account details?)\b|\bcard details?\b|"
-    r"\bscan (this|the) qr\b|\bqr code\b[^.]{0,25}\b(pay|payment)\b|"
+    r"\bscan (this|the) qr\b|\bqr code\b[^.]{0,25}\b(pay|payment)\b",
+    re.I,
+)
+# WEAK: pressure/urgency framing with no explicit ask. Real scams use it,
+# but so do legitimate security notices ("we noticed a failed login"). On
+# its own this is a signal to reason about, NOT grounds for a hard verdict
+# -- messages matching only these defer to the LLM, which can read intent
+# from context in ways a keyword list cannot generalize to.
+_OTP_FEE_WEAK_RE = re.compile(
     r"\bverify (through|via) this link\b|"
     r"\baccount (will be |may be )?(blocked|locked|restricted|suspended)\b|"
     r"\bfailed login attempts?\b",
     re.I,
+)
+_OTP_FEE_RE = re.compile(
+    f"{_OTP_FEE_STRONG_RE.pattern}|{_OTP_FEE_WEAK_RE.pattern}", re.I
 )
 # A mention of OTP/fee/code language inside an explicit denial ("we never
 # ask for your OTP") is a safety notice, not a request -- the opposite
@@ -41,6 +54,19 @@ def _has_otp_or_fee_ask(text: str) -> bool:
     if _OTP_NEGATION_RE.search(text):
         return False
     return bool(_OTP_FEE_RE.search(text))
+
+
+def otp_or_fee_signal_strength(text: str) -> str:
+    """'strong' (explicit credential/payment ask), 'weak' (pressure framing
+    only), or 'none'. Rules act on 'strong'; 'weak' is surfaced to the LLM
+    as a signal to weigh rather than a verdict to apply."""
+    if not text or _OTP_NEGATION_RE.search(text):
+        return "none"
+    if _OTP_FEE_STRONG_RE.search(text):
+        return "strong"
+    if _OTP_FEE_WEAK_RE.search(text):
+        return "weak"
+    return "none"
 
 
 def extract_entities(text: str) -> dict:
@@ -107,6 +133,8 @@ def _trust_features(msg: dict, ctx) -> dict:
     trust = {
         "business_verified": None,
         "domain_mismatch": None,
+        "official_domain": None,
+        "domain_used_by_sender": None,
         "account_age_days": None,
         "domain_used_age_days": None,
         "business_reports_30d": None,
@@ -127,6 +155,8 @@ def _trust_features(msg: dict, ctx) -> dict:
                 and bool(biz["domain_used_by_sender"])
                 and biz["official_domain"] != biz["domain_used_by_sender"]
             )
+            trust["official_domain"] = biz["official_domain"] or None
+            trust["domain_used_by_sender"] = biz["domain_used_by_sender"] or None
             trust["account_age_days"] = int(biz["account_age_days"] or 0)
             trust["domain_used_age_days"] = int(biz["domain_used_by_sender_age_days"] or 0)
             trust["business_reports_30d"] = int(biz["user_reports_30d"] or 0)
@@ -249,13 +279,26 @@ def _content_features(msg: dict, ctx, transcript_entities: dict | None) -> dict:
         }
     mentions_recipient = msg["user_id"] in entities["mentions"]
     user = ctx.users.get(msg["user_id"], {})
+    combined_text = " ".join(t for t in (text, _transcript_text_of(transcript_entities)) if t)
     return {
         "entities": entities,
         "mentions_recipient": mentions_recipient,
         "forwarded_count": int(msg["forwarded_count"] or 0),
         "in_dnd_window": in_dnd_window(msg["created_at"], user.get("do_not_disturb_window", "")),
         "text_length": len(text),
+        # 'strong' carries hard-rule authority; 'weak' is surfaced to the
+        # LLM as context rather than acted on directly (see HR2).
+        "otp_or_fee_strength": otp_or_fee_signal_strength(combined_text) if combined_text else (
+            "strong" if entities["otp_or_fee_ask"] else "none"
+        ),
     }
+
+
+def _transcript_text_of(transcript_entities) -> str:
+    """Transcript entities arrive pre-extracted (the media pipeline can't
+    re-run regexes over audio), so a transcript-sourced otp flag is treated
+    as 'strong' rather than being re-graded from text we don't have here."""
+    return ""
 
 
 def build_feature_bundle(msg: dict, ctx, transcript_entities: dict | None = None) -> FeatureBundle:
