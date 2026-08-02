@@ -2,3 +2,4 @@ pandas
 google-genai
 anthropic
 python-dotenv
+pytest

@@ -7,7 +7,26 @@ Tables B (boundary/negation values) and C (guard interaction, small enough
 to be near-exhaustive) are unchanged — pairwise and boundary-value analysis
 are complementary techniques, not competitors; a real test plan uses both.
 
-Planning doc only. No code yet — reviewed below, awaiting sign-off.
+**Status: implemented.** `code/tests/` — 61 tests, all passing (20 boundary
++ 32 pairwise + 9 guard). Full pipeline re-verified after: 0 validator
+violations, 0 clamp events, TRAIN/TEST action accuracy 100%/100%, 0 critical
+misses, 0 spam-pushed-forward, byte-identical determinism confirmed.
+
+**What the exercise itself found, beyond the planned coverage:**
+- B15 (the un-verified false-positive check) passed clean — `INJECTION_RE`
+  does not fire on benign uses of "confidence"/"action"/"mark this as
+  important". Resolved, not just planned.
+- A real test-harness bug: `_deep_merge` didn't copy dict values it only
+  needed to pass through, so `make_bundle`'s `content.pop("entities")`
+  mutated a shared module-level trigger dict, silently corrupting HR2's
+  fixture for every test after its first use in the same session. Fixed
+  with `copy.deepcopy` before merging — a good example of why running the
+  planned tests, not just writing them, matters.
+- A real rule-logic finding, not a test bug: HR4 (requires
+  `reported_count > 0`) and HR5 (requires `reported_count == 0` as part of
+  its own guard clause) can never both fire on the same message. Documented
+  explicitly as `IMPOSSIBLE_PAIRS` with a dedicated test proving both
+  directions, rather than silently dropped from the pairwise matrix.
 
 ---
 
