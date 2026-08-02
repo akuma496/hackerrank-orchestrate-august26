@@ -36,6 +36,17 @@ Notes on commonly confused pairs:
 - G4: when torn between digest and mute, and no safety-relevant rule condition is present, prefer digest.
 - Forwarding (`forwarded_count > 0`) is a risk amplifier that should push you toward scrutinizing content harder, not a message_type by itself.
 - A message that explicitly denies asking for something ("we never ask for your OTP/payment") is a safety notice, not a request -- do not treat the mention of OTP/payment/fee inside a denial as itself risky.
+- A message that explicitly disclaims urgency ("nothing urgent", "no rush") is not urgent even if the word "urgent" appears in it.
+
+## Grounding (do not invent specifics)
+
+Only state a specific fact, count, or history claim in your `reason` if it is
+literally present in the FEATURES block or the message content above. Do not
+say "the user replied before" unless `relationship.has_replied_to_sender_before`
+is true; do not say "reported N times" unless that N matches
+`behavior.reported_count`; do not claim a URL/link is present unless one
+appears in `content.urls` or the message text. If you don't have a specific
+fact to cite, write the reason in general terms instead of inventing a detail.
 
 ## Evidence
 

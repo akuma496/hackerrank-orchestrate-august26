@@ -23,7 +23,8 @@ _OTP_FEE_RE = re.compile(
 # the scam it's warning about.
 _OTP_NEGATION_RE = re.compile(
     r"\b(never|don'?t|do not|won'?t|will not|should not|shouldn'?t)\s+"
-    r"(ask|request|require|need)\w*\b[^.]{0,50}\b(otp|payment|fee|code|pin|password)",
+    r"(ask|request|require|need)\w*\b[^.]{0,50}\b(otp|payment|fee|code|pin|password)|"
+    r"\bno\s+(otp|payment|fee|code|pin|password)[^.]{0,30}\b(is|are|will be)?\s*(required|needed|necessary)\b",
     re.I,
 )
 _MENTION_RE = re.compile(r"@(u_\d+)")

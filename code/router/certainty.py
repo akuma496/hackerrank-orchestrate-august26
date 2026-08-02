@@ -4,7 +4,7 @@ notify/digest/mute/abstain with a strength; the spread across non-abstaining
 votes determines certain/confident/conflict/uninformed."""
 
 from . import config
-from .rules import INJECTION_RE, PROMO_RE, TIME_CRITICAL_RE
+from .rules import INJECTION_RE, PROMO_RE, is_time_critical
 
 _WEIGHT = {"strong": 2, "medium": 1, "weak": 0.5}
 
@@ -59,7 +59,7 @@ def content_vote(bundle, transcript_text=None):
         return ("mute", "strong")
     if c["mentions_recipient"]:
         return ("notify", "strong")
-    if TIME_CRITICAL_RE.search(text or ""):
+    if is_time_critical(text):
         return ("notify", "medium")
     if PROMO_RE.search(text or ""):
         return ("digest", "weak")

@@ -15,6 +15,22 @@ TIME_CRITICAL_RE = re.compile(
     r"\bby \d{1,2}(:\d{2})?\s*(am|pm)?\b|\blast (call|chance)\b",
     re.I,
 )
+# "Nothing urgent" / "not urgent" / "no rush" explicitly disclaims urgency --
+# a bare regex match on "urgent" without this check reads the negation as
+# the opposite of what it says.
+NOT_TIME_CRITICAL_RE = re.compile(
+    r"\bnothing urgent\b|\bnot urgent\b|\bno rush\b|\bno hurry\b|"
+    r"\bwhenever (you|it'?s)\b|\bno need to rush\b",
+    re.I,
+)
+
+
+def is_time_critical(text: str) -> bool:
+    if not text:
+        return False
+    if NOT_TIME_CRITICAL_RE.search(text):
+        return False
+    return bool(TIME_CRITICAL_RE.search(text))
 PROMO_RE = re.compile(
     r"\bsale\b|\boffer\b|\bdiscount\b|% off|\blimited time\b|\bbuy now\b|"
     r"\bfree delivery\b|\bshop now\b|\bflat \d+%|\bnew arrivals\b|\bcashback\b",
@@ -33,9 +49,10 @@ PAYMENT_RE = re.compile(
 # aimed at the router, not the recipient) -- a legitimate WhatsApp message
 # never contains this. Detecting it is itself a strong scam signal.
 INJECTION_RE = re.compile(
-    r"\brouting override\b|\binternal router metadata\b|\bset action\s*=|"
-    r"\baction\s*=\s*(notify|mute|digest)\b|\bconfidence\s*=\s*1\b|"
+    r"\brouting override\b|\binternal router metadata\b|\bsystem note\b|"
+    r"\bset action\s*=|\baction\s*=\s*(notify|mute|digest)\b|\bconfidence\s*=\s*1\b|"
     r"\bignore (previous|all) instructions\b|\bsystem prompt\b|"
+    r"\balways (mark|label|classify|flag) this as\b|\bmark this (message |conversation )?as (notify|mute|digest|urgent|important)\b|"
     r"\byou are (an?|the) (ai|llm|assistant|router|classifier)\b",
     re.I,
 )
@@ -53,7 +70,7 @@ class Verdict:
 def infer_type_from_content(text: str, otp_or_fee_ask: bool, is_business: bool) -> str:
     if otp_or_fee_ask:
         return "scam"
-    if TIME_CRITICAL_RE.search(text or ""):
+    if is_time_critical(text):
         return "urgent"
     if PROMO_RE.search(text or ""):
         return "promotion"
@@ -103,16 +120,23 @@ def hr1_domain_mismatch(bundle, ctx, **kw):
 def hr2_payment_risk(bundle, ctx, transcript_text=None, **kw):
     if not bundle.content["entities"]["otp_or_fee_ask"]:
         return None
-    unverified = bundle.trust.get("business_verified") is False
-    young_domain = (bundle.trust.get("domain_used_age_days") or 9999) < 30
-    no_relationship = (bundle.relationship.get("activity_count_180d") or 0) == 0
-    if unverified or young_domain or no_relationship:
-        return Verdict(
-            "mute", "scam",
-            "Message asks for payment/OTP from a sender with no verified relationship to the user.",
-            "rule:HR2",
+    if bundle.business_id:
+        unverified = bundle.trust.get("business_verified") is False
+        young_domain = (bundle.trust.get("domain_used_age_days") or 9999) < 30
+        no_relationship = (bundle.relationship.get("activity_count_180d") or 0) == 0
+        if not (unverified or young_domain or no_relationship):
+            return None
+        reason = "Message asks for payment/OTP from a business sender with no verified relationship to the user."
+    else:
+        # Not a business relationship to check -- OTP/payment-code requests
+        # are muted on content alone regardless of group/personal context,
+        # since account compromise (a hacked family/group member's account
+        # asking for OTPs) is a common vector this can't distinguish from.
+        reason = (
+            "Message asks for an OTP/payment code -- muted as a precaution regardless of "
+            "sender relationship, since this exact request pattern is a common account-compromise vector."
         )
-    return None
+    return Verdict("mute", "scam", reason, "rule:HR2")
 
 
 def hr3_promo_opted_out(bundle, ctx, transcript_text=None, **kw):
@@ -148,9 +172,11 @@ def hr5_direct_mention(bundle, ctx, transcript_text=None, **kw):
     if (bundle.behavior.get("reported_count") or 0) > 0 or bundle.trust.get("risky_group"):
         return None
     text = _text_for(bundle, transcript_text)
-    mtype = infer_type_from_content(text, False, False)
-    if mtype in ("promotion", "greeting", "business_update"):
-        mtype = "personal"
+    # A @mention is someone addressing this user directly -- almost always
+    # personal coordination. Only escalate away from 'personal' when the
+    # content is genuinely time-critical; a stray "refund"/"bill" word in an
+    # otherwise conversational mention doesn't make it a payment message.
+    mtype = "urgent" if is_time_critical(text) else "personal"
     return Verdict(
         "notify", mtype,
         "Message directly mentions this user in a group conversation.",
@@ -160,7 +186,7 @@ def hr5_direct_mention(bundle, ctx, transcript_text=None, **kw):
 
 def hr6_trusted_admin_time_critical(bundle, ctx, transcript_text=None, **kw):
     text = _text_for(bundle, transcript_text)
-    if bundle.trust.get("trusted_group") and bundle.trust.get("sender_role") == "admin" and TIME_CRITICAL_RE.search(text or ""):
+    if bundle.trust.get("trusted_group") and bundle.trust.get("sender_role") == "admin" and is_time_critical(text):
         mtype = "urgent" if re.search(r"\bnow\b|\basap\b|\burgent\b|\bimmediately\b", text or "", re.I) else "event"
         return Verdict(
             "notify", mtype,
