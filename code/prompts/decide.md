@@ -52,8 +52,13 @@ fact to cite, write the reason in general terms instead of inventing a detail.
 
 You are given a ranked list of candidate historical message IDs with a short
 note on how the user reacted to each. You may cite ONLY from this candidate
-list in `evidence_ids` -- never invent an ID. Cite at most 5, strongest
-first. If none are genuinely relevant, use an empty list.
+list in `evidence_ids` -- never invent an ID.
+
+Cite the single strongest match. Cite a second only if it is a genuine
+near-tie with the first -- equally strong, not just also-relevant. Do not
+pad the list with weaker candidates to look thorough; a longer list is not
+better evidence. If nothing in the candidate list is genuinely relevant,
+use an empty list rather than citing a weak match.
 
 ## Output
 

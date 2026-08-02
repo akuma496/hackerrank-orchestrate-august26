@@ -3,7 +3,6 @@ never self-reported by the LLM (see PLAN.md sec 5). Five families vote
 notify/digest/mute/abstain with a strength; the spread across non-abstaining
 votes determines certain/confident/conflict/uninformed."""
 
-from . import config
 from .rules import INJECTION_RE, PROMO_RE, is_time_critical
 
 _WEIGHT = {"strong": 2, "medium": 1, "weak": 0.5}
@@ -77,7 +76,10 @@ def compute_family_votes(bundle, transcript_text=None) -> dict:
 
 def compute_certainty(votes: dict) -> tuple:
     """votes: family -> (direction, strength), may include 'llm'. Returns
-    (state, leaning_direction) where state in certain/confident/conflict/uninformed.
+    (state, leaning_direction, agreement_ratio). state is one of
+    certain/confident/conflict/uninformed. agreement_ratio is
+    top_weight / total_weight over the tally actually used -- None for
+    'uninformed', where there's nothing to compute a ratio over.
 
     The LLM's own vote never counts as corroboration for its own certainty --
     if all four deterministic families (trust/relationship/behavior/content)
@@ -90,7 +92,7 @@ def compute_certainty(votes: dict) -> tuple:
         deterministic_tally[direction] = deterministic_tally.get(direction, 0) + _WEIGHT[strength]
 
     if not deterministic_tally:
-        return "uninformed", votes.get("llm", (None, None))[0]
+        return "uninformed", votes.get("llm", (None, None))[0], None
 
     tally = dict(deterministic_tally)
     if "llm" in votes:
@@ -100,23 +102,41 @@ def compute_certainty(votes: dict) -> tuple:
 
     ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
     top_dir, top_w = ranked[0]
+    total_w = sum(tally.values())
+    ratio = round(top_w / total_w, 3)
+
     if len(ranked) == 1:
-        return "certain", top_dir
+        return "certain", top_dir, ratio
 
     second_dir, second_w = ranked[1]
     if second_w == 0:
-        return "certain", top_dir
+        return "certain", top_dir, ratio
     if top_w / second_w >= 2:
-        return "confident", top_dir
-    return "conflict", top_dir
+        return "confident", top_dir, ratio
+    return "conflict", top_dir, ratio
 
 
-def pick_confidence(state: str, *, hard_rule: bool = False, escalated: bool = False) -> float:
-    lo, hi = config.CONFIDENCE_BANDS[state]
-    if state == "certain":
-        return hi if hard_rule else lo
-    if state == "confident":
-        return round((lo + hi) / 2, 2)
-    if state == "conflict":
-        return hi if escalated else lo
-    return lo  # uninformed
+# Confidence is a continuous function of agreement_ratio, not four hand-set
+# band constants. The old bands (0.78-0.91) were chosen to match the solved
+# samples' own range -- that's fitting to the label, not measuring anything.
+# This formula is derived from the vote structure only and deliberately
+# spans a WIDER, more honest range: a bare majority (ratio=0.5) should read
+# meaningfully lower than near-unanimity (ratio=1.0), which four narrow
+# bands couldn't express. See PLAN.md P1 / calibration measurement in
+# evaluation/main.py for how this is validated against the sample labels.
+_AGREEMENT_FLOOR = 0.55
+_AGREEMENT_SPAN = 0.40
+# Rules fire only on conditions precise enough to be a verdict outright
+# (abstain-by-default) -- categorically different from a multi-signal vote,
+# so this stays a flat constant rather than being forced through the same
+# ratio formula. Not 1.0: even a hard rule can misfire on an unseen pattern.
+HARD_RULE_CONFIDENCE = 0.93
+UNINFORMED_CONFIDENCE = 0.55  # no independent signal at all -- barely above a coin flip
+
+
+def pick_confidence(state: str, *, agreement_ratio: float | None = None, hard_rule: bool = False) -> float:
+    if hard_rule:
+        return HARD_RULE_CONFIDENCE
+    if state == "uninformed" or agreement_ratio is None:
+        return UNINFORMED_CONFIDENCE
+    return round(_AGREEMENT_FLOOR + _AGREEMENT_SPAN * agreement_ratio, 2)

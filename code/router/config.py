@@ -32,6 +32,7 @@ DAILY_NOTIFICATION_SUMMARY_CSV = DATASET_DIR / "daily_notification_summary.csv"
 TRANSCRIPTS_CACHE = CACHE_DIR / "transcripts.json"
 LLM_DECISIONS_CACHE = CACHE_DIR / "llm_decisions.json"
 JUDGE_FLAGS_CACHE = CACHE_DIR / "judge_flags.json"
+PERCEPTIONS_CACHE = CACHE_DIR / "perceptions.json"
 
 GEMINI_API_KEY_ENV = "GEMINI_API_KEY"
 ANTHROPIC_API_KEY_ENV = "ANTHROPIC_API_KEY"
@@ -70,13 +71,12 @@ TYPE_PRECEDENCE = (
     "unknown",
 )
 
-# Deterministic confidence bands per certainty state (see PLAN.md sec 5)
-CONFIDENCE_BANDS = {
-    "certain": (0.88, 0.91),
-    "confident": (0.83, 0.87),
-    "conflict": (0.78, 0.82),
-    "uninformed": (0.78, 0.78),
-}
+# Confidence is now a continuous function of the certainty engine's
+# agreement_ratio (see certainty.pick_confidence), not fixed per-state
+# bands -- those were originally set to match the solved samples' own
+# confidence range, which is fitting to the label, not measuring anything.
+# HARD_RULE_CONFIDENCE and UNINFORMED_CONFIDENCE live in certainty.py next
+# to the formula they belong to.
 
 MAX_EVIDENCE = 5
 

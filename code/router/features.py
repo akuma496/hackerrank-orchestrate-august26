@@ -5,7 +5,7 @@ only reads from the in-memory Context built by loaders.py."""
 
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from . import config
 
@@ -266,7 +266,7 @@ def _behavior_features(msg: dict, ctx) -> dict:
     }
 
 
-def _content_features(msg: dict, ctx, transcript_entities: dict | None) -> dict:
+def _content_features(msg: dict, ctx, transcript_entities: dict | None, perception: dict | None) -> dict:
     text = msg["message_text"]
     entities = extract_entities(text)
     if transcript_entities:
@@ -277,9 +277,43 @@ def _content_features(msg: dict, ctx, transcript_entities: dict | None) -> dict:
             or transcript_entities.get("otp_or_fee_ask", False),
             "mentions": entities["mentions"] + transcript_entities.get("mentions", []),
         }
+    # Perception (LLM, additive) OR-merges in exactly the same way transcript
+    # entities do -- it can only ADD a finding regex/transcript missed
+    # (different phrasing, a non-English language), never remove one. See
+    # router/perception.py for why this is scoped to one signal.
+    #
+    # Authority is tiered, not blanket-trusted: a live check (see session
+    # notes / PLAN.md P2) found perception disagreeing with itself across
+    # languages on an identical message (the English half of a bilingual
+    # pair was fixed by a prompt correction, the Hindi half was not) --
+    # concrete evidence it isn't reliable enough for unilateral hard-rule
+    # authority yet. So: perception ALONE (regex found nothing) caps at
+    # 'weak' -- it reaches the LLM decision path as a signal to weigh, but
+    # cannot by itself trigger a hard-rule mute. Perception CORROBORATING an
+    # already-weak regex match upgrades to 'strong', since two independent
+    # detectors agreeing is real evidence a lone LLM call isn't.
+    perception_flagged_credential_request = bool(
+        perception and perception.get("credential_or_payment_request")
+    )
+    if perception_flagged_credential_request:
+        entities = {**entities, "otp_or_fee_ask": True}
     mentions_recipient = msg["user_id"] in entities["mentions"]
     user = ctx.users.get(msg["user_id"], {})
-    combined_text = " ".join(t for t in (text, _transcript_text_of(transcript_entities)) if t)
+    if text:
+        regex_strength = otp_or_fee_signal_strength(text)
+    else:
+        # Transcript-sourced entities arrive pre-extracted (the media
+        # pipeline can't re-run text regexes over audio/image bytes here).
+        regex_strength = "strong" if entities["otp_or_fee_ask"] else "none"
+
+    if regex_strength == "strong":
+        strength = "strong"
+    elif regex_strength == "weak":
+        strength = "strong" if perception_flagged_credential_request else "weak"
+    elif perception_flagged_credential_request:
+        strength = "weak"  # perception-only: capped, see note above
+    else:
+        strength = "none"
     return {
         "entities": entities,
         "mentions_recipient": mentions_recipient,
@@ -288,20 +322,14 @@ def _content_features(msg: dict, ctx, transcript_entities: dict | None) -> dict:
         "text_length": len(text),
         # 'strong' carries hard-rule authority; 'weak' is surfaced to the
         # LLM as context rather than acted on directly (see HR2).
-        "otp_or_fee_strength": otp_or_fee_signal_strength(combined_text) if combined_text else (
-            "strong" if entities["otp_or_fee_ask"] else "none"
-        ),
+        "otp_or_fee_strength": strength,
+        "detected_language": (perception or {}).get("language"),
     }
 
 
-def _transcript_text_of(transcript_entities) -> str:
-    """Transcript entities arrive pre-extracted (the media pipeline can't
-    re-run regexes over audio), so a transcript-sourced otp flag is treated
-    as 'strong' rather than being re-graded from text we don't have here."""
-    return ""
-
-
-def build_feature_bundle(msg: dict, ctx, transcript_entities: dict | None = None) -> FeatureBundle:
+def build_feature_bundle(
+    msg: dict, ctx, transcript_entities: dict | None = None, perception: dict | None = None
+) -> FeatureBundle:
     return FeatureBundle(
         message_id=msg["message_id"],
         user_id=msg["user_id"],
@@ -317,5 +345,5 @@ def build_feature_bundle(msg: dict, ctx, transcript_entities: dict | None = None
         trust=_trust_features(msg, ctx),
         relationship=_relationship_features(msg, ctx),
         behavior=_behavior_features(msg, ctx),
-        content=_content_features(msg, ctx, transcript_entities),
+        content=_content_features(msg, ctx, transcript_entities, perception),
     )

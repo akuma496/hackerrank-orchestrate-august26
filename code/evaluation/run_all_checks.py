@@ -13,10 +13,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from router import decide, loaders, output, validate  # noqa: E402
+from router import decide, loaders, output, perception, validate  # noqa: E402
 
 from evaluation import judge  # noqa: E402
-from evaluation.main import evaluate, print_report, stratified_split  # noqa: E402
+from evaluation.main import evaluate  # noqa: E402
+from evaluation.cross_validation import cross_validate, print_cv_report  # noqa: E402
 
 
 def main():
@@ -36,6 +37,17 @@ def main():
     else:
         print("clamp events: 0")
 
+    perceptions = perception.perceive_all(ctx, transcripts)
+    stats = perception.agreement_stats(ctx, transcripts, perceptions)
+    print(
+        f"perception vs regex: {stats['both_agree_flagged']} both-flagged, "
+        f"{stats['both_agree_clear']} both-clear, "
+        f"{len(stats['regex_only'])} regex-only, "
+        f"{len(stats['perception_only'])} perception-only (capped at 'weak' authority)"
+    )
+    if stats["perception_only"]:
+        print("  perception-only:", ", ".join(stats["perception_only"]))
+
     print("\n=== 2/5: Tier-1 validator ===")
     violations = validate.validate_output(ctx)
     if violations:
@@ -45,13 +57,9 @@ def main():
     else:
         print("clean: 0 violations")
 
-    print("\n=== 3/5: eval harness (sample_messages.csv) ===")
-    train, test = stratified_split(ctx.sample_messages)
-    train_report = evaluate(train, ctx, transcripts, "TRAIN")
-    test_report = evaluate(test, ctx, transcripts, "TEST (frozen)")
-    print_report(train_report)
-    print()
-    print_report(test_report)
+    print("\n=== 3/5: eval harness (sample_messages.csv, 5-fold stratified) ===")
+    cv = cross_validate(evaluate, ctx.sample_messages, ctx, transcripts, k=5)
+    print_cv_report(cv)
 
     print("\n=== 4/5: Tier-2 judge sweep (advisory) ===")
     flags = judge.run_sweep()
@@ -68,20 +76,18 @@ def main():
     print("byte-identical rerun: CONFIRMED" if identical else "byte-identical rerun: FAILED")
 
     print("\n=== summary ===")
-    print(f"validator violations:     {len(violations)}")
-    print(f"train action_accuracy:    {train_report['action_accuracy']}")
-    print(f"test  action_accuracy:    {test_report['action_accuracy']}")
-    print(f"train type_accuracy:      {train_report['message_type_accuracy']}")
-    print(f"test  type_accuracy:      {test_report['message_type_accuracy']}")
-    print(f"critical misses (t/te):   {train_report['critical_miss_count']}/{test_report['critical_miss_count']} [HARD THRESHOLD: 0]")
-    print(f"spam pushed fwd (t/te):   {train_report['spam_pushed_forward_count']}/{test_report['spam_pushed_forward_count']} [sanity check]")
-    print(f"judge flags:              {len(flags)}")
-    print(f"determinism:              {'OK' if identical else 'BROKEN'}")
+    print(f"validator violations:       {len(violations)}")
+    print(f"action_accuracy (pooled n={cv['total_n']}): {cv['pooled_action_accuracy']} (95% CI {cv['pooled_action_ci95']})")
+    print(f"type_accuracy   (pooled n={cv['total_n']}): {cv['pooled_type_accuracy']} (95% CI {cv['pooled_type_ci95']})")
+    print(f"action_accuracy across folds: mean={cv['action_accuracy_mean']} std={cv['action_accuracy_std']}")
+    print(f"critical misses (pooled, all 30): {cv['total_critical_misses']} [HARD THRESHOLD: 0]")
+    print(f"spam pushed fwd (pooled, all 30): {cv['total_spam_pushed_forward']} [sanity check]")
+    print(f"judge flags:                {len(flags)}")
+    print(f"determinism:                {'OK' if identical else 'BROKEN'}")
 
     return {
         "violations": violations,
-        "train_report": train_report,
-        "test_report": test_report,
+        "cross_validation": cv,
         "judge_flags": flags,
         "deterministic": identical,
     }

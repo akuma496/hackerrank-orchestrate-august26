@@ -5,7 +5,7 @@ the certainty engine, then the guard post-pass. See PLAN.md sec 1."""
 
 from dataclasses import dataclass
 
-from . import certainty, config, evidence, features, llm, rules
+from . import certainty, config, evidence, features, llm, perception, rules
 from .transcribe import transcribe_all
 
 
@@ -52,6 +52,7 @@ def _format_features_block(bundle) -> str:
         f"'weak' = pressure/urgency framing only, which legitimate security notices also use, "
         f"so judge it against sender trust and history rather than treating it as proof of a "
         f"scam): {c.get('otp_or_fee_strength')}",
+        f"content.detected_language: {c.get('detected_language')}",
     ]
     return "\n".join(lines)
 
@@ -114,12 +115,15 @@ def _enforce_invariants(action: str, message_type: str) -> str:
     return action
 
 
-def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
+def decide_message(msg: dict, ctx, transcripts: dict, perceptions: dict | None = None) -> DecisionRow:
     entry = transcripts.get(msg["media_id"]) if msg["media_id"] else None
     transcript_text = entry["transcript"] if entry else None
     transcript_entities = entry["entities"] if entry else None
+    msg_perception = (perceptions or {}).get(msg["message_id"])
 
-    bundle = features.build_feature_bundle(msg, ctx, transcript_entities=transcript_entities)
+    bundle = features.build_feature_bundle(
+        msg, ctx, transcript_entities=transcript_entities, perception=msg_perception
+    )
     evidence_items = evidence.rank_evidence(bundle, ctx, transcript_text=transcript_text)
     candidate_ids = evidence.candidate_id_set(bundle, ctx)
 
@@ -133,7 +137,7 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
         action, message_type = _clamp(msg["message_id"], action, message_type)
         action = _enforce_invariants(action, message_type)
         reason = verdict.reason if not notes else f"{verdict.reason} {' '.join(notes)}"
-        confidence = certainty.pick_confidence("certain", hard_rule=True)
+        confidence = certainty.pick_confidence("certain", hard_rule=True)  # hard_rule=True short-circuits the ratio entirely
         return DecisionRow(
             msg["message_id"], action, message_type, reason, confidence,
             evidence.evidence_ids_field(evidence_items),
@@ -143,14 +147,12 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
     llm_result = llm.decide_call(payload, escalate=False)
     votes = certainty.compute_family_votes(bundle, transcript_text=transcript_text)
     votes["llm"] = (llm_result.get("action", "digest"), "strong")
-    state, _ = certainty.compute_certainty(votes)
+    state, _, ratio = certainty.compute_certainty(votes)
 
-    escalated = False
     if state == "conflict":
         llm_result = llm.decide_call(payload, escalate=True)
         votes["llm"] = (llm_result.get("action", "digest"), "strong")
-        state, _ = certainty.compute_certainty(votes)
-        escalated = True
+        state, _, ratio = certainty.compute_certainty(votes)
 
     action, message_type, notes = rules.apply_guards(
         llm_result.get("action", "digest"), llm_result.get("message_type", "unknown"), bundle, "llm"
@@ -162,7 +164,7 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
         reason = f"{reason} {' '.join(notes)}".strip()
     if not reason:
         reason = "Decision made from message content and user history."
-    confidence = certainty.pick_confidence(state, hard_rule=False, escalated=escalated)
+    confidence = certainty.pick_confidence(state, agreement_ratio=ratio)
 
     cited = [i for i in llm_result.get("evidence_ids", []) if i in candidate_ids]
     evidence_field = (
@@ -173,5 +175,7 @@ def decide_message(msg: dict, ctx, transcripts: dict) -> DecisionRow:
 
 
 def decide_all(ctx) -> list:
+    CLAMP_EVENTS.clear()  # each run reports its own clamp events, not a running total across calls
     transcripts = transcribe_all(ctx)
-    return [decide_message(m, ctx, transcripts) for m in ctx.messages]
+    perceptions = perception.perceive_all(ctx, transcripts)
+    return [decide_message(m, ctx, transcripts, perceptions) for m in ctx.messages]

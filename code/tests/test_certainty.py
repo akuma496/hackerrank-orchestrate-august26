@@ -3,7 +3,7 @@ component, despite having had a real bug (LLM self-corroboration inflating
 confidence on zero-signal messages) that was caught only by manual smoke
 testing. See TESTING_PLAN.md QA-lens notes."""
 
-from router import certainty, config
+from router import certainty
 from tests.conftest import make_bundle
 
 
@@ -12,8 +12,8 @@ from tests.conftest import make_bundle
 def test_llm_vote_alone_is_uninformed_not_certain():
     """THE regression lock: when every deterministic family abstains, the
     LLM's lone vote must NOT be treated as unanimous agreement. Nothing
-    independent corroborates it, so the state is 'uninformed' (0.78 floor),
-    not 'certain' (0.88+)."""
+    independent corroborates it, so the state is 'uninformed' (the flat,
+    low UNINFORMED_CONFIDENCE), not 'certain'."""
     votes = {
         "trust": ("abstain", "weak"),
         "relationship": ("abstain", "weak"),
@@ -21,17 +21,19 @@ def test_llm_vote_alone_is_uninformed_not_certain():
         "content": ("abstain", "weak"),
         "llm": ("notify", "strong"),
     }
-    state, leaning = certainty.compute_certainty(votes)
+    state, leaning, ratio = certainty.compute_certainty(votes)
     assert state == "uninformed"
     assert leaning == "notify"  # direction still reported, just not trusted
-    assert certainty.pick_confidence(state) == 0.78
+    assert ratio is None
+    assert certainty.pick_confidence(state, agreement_ratio=ratio) == certainty.UNINFORMED_CONFIDENCE
 
 
 def test_all_families_abstain_and_no_llm_is_uninformed():
     votes = {f: ("abstain", "weak") for f in ("trust", "relationship", "behavior", "content")}
-    state, leaning = certainty.compute_certainty(votes)
+    state, leaning, ratio = certainty.compute_certainty(votes)
     assert state == "uninformed"
     assert leaning is None
+    assert ratio is None
 
 
 # --- State classification -------------------------------------------------
@@ -43,9 +45,10 @@ def test_unanimous_deterministic_families_is_certain():
         "behavior": ("abstain", "weak"),
         "content": ("abstain", "weak"),
     }
-    state, leaning = certainty.compute_certainty(votes)
+    state, leaning, ratio = certainty.compute_certainty(votes)
     assert state == "certain"
     assert leaning == "mute"
+    assert ratio == 1.0  # only one direction present -- full agreement by construction
 
 
 def test_dominant_majority_is_confident():
@@ -56,9 +59,10 @@ def test_dominant_majority_is_confident():
         "behavior": ("notify", "medium"),    # 1  -> notify total 1
         "content": ("abstain", "weak"),
     }
-    state, leaning = certainty.compute_certainty(votes)
+    state, leaning, ratio = certainty.compute_certainty(votes)
     assert state == "confident"
     assert leaning == "mute"
+    assert ratio == 0.8  # 4 / (4+1)
 
 
 def test_close_disagreement_is_conflict():
@@ -69,8 +73,9 @@ def test_close_disagreement_is_conflict():
         "behavior": ("notify", "medium"),      # 1 -> notify 2, mute 2
         "content": ("abstain", "weak"),
     }
-    state, _ = certainty.compute_certainty(votes)
+    state, _, ratio = certainty.compute_certainty(votes)
     assert state == "conflict"
+    assert ratio == 0.5  # dead-even split
 
 
 def test_llm_can_corroborate_but_not_create_certainty():
@@ -83,46 +88,56 @@ def test_llm_can_corroborate_but_not_create_certainty():
         "content": ("notify", "medium"),
     }
     votes_with = dict(votes_without, llm=("mute", "strong"))
-    state_without, _ = certainty.compute_certainty(votes_without)
-    state_with, _ = certainty.compute_certainty(votes_with)
+    state_without, _, ratio_without = certainty.compute_certainty(votes_without)
+    state_with, _, ratio_with = certainty.compute_certainty(votes_with)
     assert state_without == "conflict"   # 1 vs 1
     assert state_with == "confident"     # 3 vs 1, LLM broke the tie
+    assert ratio_with > ratio_without    # more agreement -> higher ratio, monotonic
 
 
-# --- Confidence banding ---------------------------------------------------
+# --- Confidence formula -----------------------------------------------------
 
-def test_confidence_bands_match_config_and_sample_range():
-    """Every producible confidence must sit inside the 0.78-0.91 band the
-    solved samples use -- calibration is graded, so drift here is a real
-    scoring risk, not cosmetic."""
-    produced = [
-        certainty.pick_confidence("certain", hard_rule=True),
-        certainty.pick_confidence("certain", hard_rule=False),
-        certainty.pick_confidence("confident"),
-        certainty.pick_confidence("conflict", escalated=True),
-        certainty.pick_confidence("conflict", escalated=False),
-        certainty.pick_confidence("uninformed"),
-    ]
-    for c in produced:
-        assert 0.78 <= c <= 0.91, c
-    assert certainty.pick_confidence("certain", hard_rule=True) == 0.91
-    assert certainty.pick_confidence("uninformed") == 0.78
+def test_confidence_is_monotonic_in_agreement_ratio():
+    """Higher agreement must never produce a lower confidence -- the whole
+    point of moving off fixed bands is that confidence tracks agreement."""
+    ratios = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    confidences = [certainty.pick_confidence("confident", agreement_ratio=r) for r in ratios]
+    assert confidences == sorted(confidences)
+    assert len(set(confidences)) > 1  # not flattened to a single value
 
 
-def test_hard_rule_outranks_llm_certain_within_the_same_band():
-    """A hard-rule verdict should sit at the top of the 'certain' band and
-    an LLM-derived 'certain' at the bottom -- same state, different
-    provenance, deliberately different confidence."""
+def test_confidence_span_is_wider_than_the_old_fixed_bands():
+    """The old bands spanned 0.78-0.91 (0.13) regardless of how the vote
+    actually split. A bare-majority conflict should now read meaningfully
+    lower than a near-unanimous one."""
+    low = certainty.pick_confidence("conflict", agreement_ratio=0.5)
+    high = certainty.pick_confidence("certain", agreement_ratio=1.0)
+    assert high - low > 0.13
+
+
+def test_hard_rule_confidence_is_flat_and_high():
+    assert certainty.pick_confidence("certain", hard_rule=True) == certainty.HARD_RULE_CONFIDENCE
+    # hard_rule short-circuits regardless of state/ratio passed in
+    assert certainty.pick_confidence("conflict", agreement_ratio=0.5, hard_rule=True) == certainty.HARD_RULE_CONFIDENCE
+
+
+def test_hard_rule_outranks_a_bare_majority_llm_decision():
     assert certainty.pick_confidence("certain", hard_rule=True) > certainty.pick_confidence(
-        "certain", hard_rule=False
+        "confident", agreement_ratio=0.6
     )
 
 
-def test_every_state_has_a_band_defined():
-    for state in ("certain", "confident", "conflict", "uninformed"):
-        assert state in config.CONFIDENCE_BANDS
-        lo, hi = config.CONFIDENCE_BANDS[state]
-        assert lo <= hi
+def test_uninformed_confidence_is_below_agreement_derived_floor():
+    """Zero independent signal should read as genuinely less confident than
+    even the weakest measurable agreement."""
+    weakest_measured = certainty.pick_confidence("conflict", agreement_ratio=0.5)
+    assert certainty.UNINFORMED_CONFIDENCE < weakest_measured
+
+
+def test_confidence_never_exceeds_a_realistic_ceiling():
+    """Never claim near-certainty from an LLM-informed vote alone."""
+    assert certainty.pick_confidence("certain", agreement_ratio=1.0) < 1.0
+    assert certainty.pick_confidence("certain", agreement_ratio=1.0) <= 0.95
 
 
 # --- Family vote logic ----------------------------------------------------

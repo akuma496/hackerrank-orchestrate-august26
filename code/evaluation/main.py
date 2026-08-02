@@ -9,9 +9,18 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from router import decide, loaders  # noqa: E402
+from router import decide, loaders, perception  # noqa: E402
 from router.transcribe import transcribe_all  # noqa: E402
 
+from evaluation.calibration import calibration_report, print_calibration_report  # noqa: E402
+from evaluation.cross_validation import cross_validate, print_cv_report  # noqa: E402
+
+# Deprecated in favor of 5-fold stratified scoring (see cross_validation.py)
+# -- a single fixed split showed TRAIN at 70% and TEST at 90% type accuracy,
+# backwards from what overfitting would predict, which was the tell that
+# n=10/n=20 single-split numbers are dominated by noise, not signal. Kept
+# only because run_all_checks.py's per-item MISS/PUSHED listings are easier
+# to read against one named split; the k-fold report is the primary numbers.
 TRAIN_FRACTION = 10 / 30
 
 
@@ -43,11 +52,28 @@ def _evidence_set(field: str) -> set:
     return {e.strip() for e in field.split(";") if e.strip()}
 
 
+def _perceptions_for(gold_rows, transcripts) -> dict:
+    """sample_messages.csv rows have their own message_ids, disjoint from
+    ctx.messages -- perception.perceive_all() is scoped to ctx.messages, so
+    samples get perceived directly here, keyed the same way."""
+    results = {}
+    for gold in gold_rows:
+        msg = _to_msg_dict(gold)
+        if msg["message_text"]:
+            text = msg["message_text"]
+        else:
+            entry = transcripts.get(msg["media_id"]) if msg["media_id"] else None
+            text = entry["transcript"] if entry else ""
+        results[msg["message_id"]] = perception.perceive(text)
+    return results
+
+
 def evaluate(gold_rows, ctx, transcripts, label: str) -> dict:
+    perceptions = _perceptions_for(gold_rows, transcripts)
     predictions = []
     for gold in gold_rows:
         msg = _to_msg_dict(gold)
-        pred = decide.decide_message(msg, ctx, transcripts)
+        pred = decide.decide_message(msg, ctx, transcripts, perceptions)
         predictions.append((gold, pred))
 
     n = len(predictions)
@@ -110,6 +136,7 @@ def evaluate(gold_rows, ctx, transcripts, label: str) -> dict:
         "spam_pushed_forward_count": len(spam_pushed_forward),
         "spam_scam_pushed_forward_count": len(spam_scam_pushed_forward),
         "confusion": dict(confusion),
+        "calibration": calibration_report(predictions),
     }
     return report
 
@@ -131,19 +158,15 @@ def print_report(report):
         for mid, gold_type, pred_a in report["spam_pushed_forward"]:
             print(f"  PUSHED {mid}: gold=mute/{gold_type} predicted={pred_a}")
     print(f"confusion (gold,pred):  {report['confusion']}")
+    print_calibration_report(report["calibration"], report["label"])
 
 
 def main():
     ctx = loaders.load_context()
     transcripts = transcribe_all(ctx)
-    train, test = stratified_split(ctx.sample_messages)
-    print(f"split: {len(train)} train / {len(test)} test (of {len(ctx.sample_messages)} samples)")
-    train_report = evaluate(train, ctx, transcripts, "TRAIN")
-    test_report = evaluate(test, ctx, transcripts, "TEST (frozen)")
-    print_report(train_report)
-    print()
-    print_report(test_report)
-    return train_report, test_report
+    cv = cross_validate(evaluate, ctx.sample_messages, ctx, transcripts, k=5)
+    print_cv_report(cv)
+    return cv
 
 
 if __name__ == "__main__":

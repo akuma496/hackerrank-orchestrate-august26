@@ -28,16 +28,24 @@ def _get_client():
 
 
 def _call_claude(payload_text: str, model: str) -> dict:
-    # Note: claude-sonnet-5 rejects an explicit `temperature` param ("deprecated
-    # for this model"). Determinism here comes from the response cache, not
-    # from temperature=0, so we simply omit it rather than special-case models.
+    # claude-sonnet-5 rejects an explicit `temperature` param ("deprecated
+    # for this model") -- omitted for that model only. claude-haiku-4-5
+    # accepts it and we set it to 0: the cache is what guarantees a rerun
+    # never calls the API again, but temperature=0 is what makes the FIRST
+    # (cache-miss) call itself as reproducible as the model allows, rather
+    # than pinning whatever answer happened to come back once. Escalation
+    # (Sonnet) has no such guarantee and that gap is real, not papered over
+    # -- see PLAN.md / README known-limitations.
     client = _get_client()
-    response = client.messages.create(
+    kwargs = dict(
         model=model,
         max_tokens=1024,
         system=_DECIDE_PROMPT,
         messages=[{"role": "user", "content": payload_text}],
     )
+    if model != config.CLAUDE_ESCALATE_MODEL:
+        kwargs["temperature"] = config.TEMPERATURE
+    response = client.messages.create(**kwargs)
     # Some models (e.g. claude-sonnet-5) may prepend a ThinkingBlock before
     # the TextBlock -- find the actual text content rather than assuming index 0.
     text_block = next((b for b in response.content if b.type == "text"), None)

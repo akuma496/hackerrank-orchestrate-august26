@@ -1,13 +1,16 @@
-"""Hard rules (HR1-HR7): high-precision verdicts that short-circuit the LLM.
+"""Hard rules (HR1-HR8): high-precision verdicts that short-circuit the LLM.
 Rules abstain by default -- they only fire on conditions precise enough to
-issue a verdict outright (see PLAN.md sec 4). Guards (G1-G5) are a policy
-post-pass applied to every decision, rule-fired or LLM-fired alike."""
+issue a verdict outright (see PLAN.md sec 4). Guards G1 (personal-sender
+protection) and G2 (DND demotion) are a code-enforced policy post-pass
+applied to every decision, rule-fired or LLM-fired alike. G3/G4/G5 (notify
+tiebreak, mute tiebreak, forwarding-as-amplifier) are policy guidance given
+to the LLM directly in prompts/decide.md rather than code-enforced -- they
+describe how to weigh ambiguous cases, not a deterministic transform."""
 
 import re
 from dataclasses import dataclass
 
-from .evidence import rank_evidence
-from .textsim import jaccard
+from .evidence import NEAR_DUPLICATE_SIMILARITY_THRESHOLD, rank_evidence
 
 TIME_CRITICAL_RE = re.compile(
     r"\btoday\b|\bnow\b|\basap\b|\bimmediately\b|\burgent\b|\bright away\b|"
@@ -64,7 +67,6 @@ class Verdict:
     message_type: str
     reason: str
     source: str  # e.g. "rule:HR1"
-    is_hard_rule: bool = True
     # Detects unambiguous safety risk (spoofed domain, OTP/payment-code
     # scam, injection attack) rather than a soft content heuristic. Carried
     # on the verdict itself so G1 doesn't depend on a separately-maintained
@@ -124,6 +126,20 @@ _LEGIT_MIN_ACCOUNT_AGE_DAYS = 180
 _LEGIT_MIN_DOMAIN_AGE_DAYS = 90
 _LEGIT_MAX_REPORTS_30D = 15
 
+# HR2: a business domain younger than this, combined with an otp/fee ask,
+# reads as a same-week throwaway domain rather than an established sender.
+HR2_YOUNG_DOMAIN_DAYS = 30
+
+# HR5: how much dismissal history is enough to treat a mention as
+# contradicted by the user's own behavior (see _mention_contradicted_by_behavior).
+HR5_DISMISSAL_RATE_THRESHOLD = 0.6
+HR5_MIN_SAMPLE_SIZE_FOR_DISMISSAL = 2
+
+# All of the above (plus evidence.NEAR_DUPLICATE_SIMILARITY_THRESHOLD, used
+# below) are swept in evaluation/sensitivity.py -- flat response
+# across a wide range means the exact value isn't load-bearing; a sharp
+# cliff right at the default would mean it's fitted to this corpus.
+
 
 def _domain_mismatch_is_legit_pattern(trust: dict) -> bool:
     return (
@@ -164,7 +180,7 @@ def hr2_payment_risk(bundle, ctx, transcript_text=None, **kw):
     signal = _describe_otp_fee_signal(text)
     if bundle.business_id:
         unverified = bundle.trust.get("business_verified") is False
-        young_domain = (bundle.trust.get("domain_used_age_days") or 9999) < 30
+        young_domain = (bundle.trust.get("domain_used_age_days") or 9999) < HR2_YOUNG_DOMAIN_DAYS
         no_relationship = (bundle.relationship.get("activity_count_180d") or 0) == 0
         if not (unverified or young_domain or no_relationship):
             return None
@@ -227,7 +243,9 @@ def _mention_contradicted_by_behavior(bundle) -> bool:
     b = bundle.behavior
     if (b.get("muted_after_count") or 0) > 0:
         return True
-    if (b.get("sample_size") or 0) >= 2 and (b.get("dismissed_rate") or 0) >= 0.6:
+    if (b.get("sample_size") or 0) >= HR5_MIN_SAMPLE_SIZE_FOR_DISMISSAL and (
+        b.get("dismissed_rate") or 0
+    ) >= HR5_DISMISSAL_RATE_THRESHOLD:
         return True
     return False
 
@@ -278,7 +296,9 @@ def hr7_ignored_duplicate(bundle, ctx, transcript_text=None, **kw):
     text = _text_for(bundle, transcript_text)
     dismissed_matches = 0
     for item in rank_evidence(bundle, ctx, transcript_text=text):
-        if item.similarity >= 0.35 and item.event_summary.startswith(("user dismissed", "user muted")):
+        if item.similarity >= NEAR_DUPLICATE_SIMILARITY_THRESHOLD and item.event_summary.startswith(
+            ("user dismissed", "user muted")
+        ):
             dismissed_matches += 1
     if dismissed_matches >= 2:
         # Marketplace-group listings are peer-to-peer sale posts even
@@ -339,11 +359,12 @@ def apply_hard_rules(bundle, ctx, transcript_text=None) -> Verdict | None:
     return None
 
 
-# --- Guards (G1-G5): policy post-pass applied to every decision ---------
+# --- Guards G1/G2: code-enforced policy post-pass applied to every decision.
+# (G3/G4/G5 are LLM prompt guidance, see prompts/decide.md -- not here.) ---
 
 
 def apply_guards(action: str, message_type: str, bundle, source: str, safety_critical: bool = False) -> tuple:
-    """Returns (action, message_type, notes) after G1-G5. `notes` records any
+    """Returns (action, message_type, notes) after G1/G2. `notes` records any
     guard that changed the outcome, for the reason/audit trail.
 
     `safety_critical` comes from the firing Verdict (see Verdict.safety_critical)

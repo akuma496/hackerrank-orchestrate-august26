@@ -54,6 +54,7 @@ def _call_judge(payload_text: str) -> dict:
     response = client.messages.create(
         model=config.CLAUDE_JUDGE_MODEL,
         max_tokens=512,
+        temperature=config.TEMPERATURE,
         system=_JUDGE_PROMPT,
         messages=[{"role": "user", "content": payload_text}],
     )
